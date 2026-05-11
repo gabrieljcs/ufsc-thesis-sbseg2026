@@ -2,9 +2,7 @@
 
 Este repositório contém o pacote de avaliação reprodutível da tese *Multilingual Jailbreaks in Language-Specific Large Language Models*, preparado como artefato para o Comitê Técnico de Artefatos do SBSeg 2026.
 
-O artefato implementa e disponibiliza a pipeline empírica usada para avaliar se o sucesso de jailbreaks cross-lingual contra LLMs alinhados para idiomas específicos é melhor explicado por distância linguística, especialização pós-treinamento, fragmentação de tokenização e instabilidade de tradução/pontuação. Esta cópia foi criada a partir de `eval/`; o diretório original não deve ser usado pelos avaliadores desta submissão.
-
-Fonte das regras de estruturação deste README: introdução do CTA/SBSeg 2026 em <https://doc-artefatos.github.io/sbseg2026/introducao.html> e instruções de submissão em <https://doc-artefatos.github.io/sbseg2026/subinstrucoes.html>.
+O artefato implementa e disponibiliza a pipeline empírica usada para avaliar se o sucesso de jailbreaks cross-lingual contra LLMs alinhados para idiomas específicos é melhor explicado por distância linguística, especialização pós-treinamento, fragmentação de tokenização e instabilidade de tradução/pontuação.
 
 # Estrutura do README.md
 
@@ -39,8 +37,6 @@ ufsc-thesis-sbseg2026/
 └── uv.lock
 ```
 
-`README.eval-original.md` preserva a documentação operacional original da pasta `eval/`, com a sequência longa de comandos por etapa. Este README é a entrada principal para avaliadores do SBSeg.
-
 # Selos Considerados
 
 Os selos considerados são: **Disponíveis (SeloD), Funcionais (SeloF), Sustentáveis (SeloS) e Experimentos Reprodutíveis (SeloR)**.
@@ -48,7 +44,7 @@ Os selos considerados são: **Disponíveis (SeloD), Funcionais (SeloF), Sustent�
 - **SeloD**: código, configurações, testes, tabelas e principais artefatos congelados estão presentes nesta pasta. Arquivos JSONL grandes também aparecem compactados em `outputs/frozen_jsonl_artifacts.zip` e `outputs/belebele_predictions_jsonl.zip`.
 - **SeloF**: o pacote oferece comandos de validação, testes unitários, piloto sem inferência e exportação de tabelas a partir do dataset congelado.
 - **SeloS**: a implementação está modularizada em `src/thesis_eval/`, com subpacotes para benchmarks, tradução, geração, avaliação, métricas e análise.
-- **SeloR**: as principais reivindicações do artigo podem ser reproduzidas a partir do dataset congelado em tempo viável; a reexecução integral da inferência também é documentada, mas exige GPU, APIs e tempo de processamento substancial.
+- **SeloR**: as principais reivindicações do artigo podem ser reproduzidas a partir do dataset congelado em tempo viável; a reexecução integral da inferência também é documentada, mas exige GPU, APIs pagas e tempo de processamento substancial.
 
 # Informações básicas
 
@@ -111,9 +107,7 @@ Para reexecutar tradução, BLASER, vLLM ou geração open-weight:
 - 150-250 GB livres se todos os pesos forem baixados localmente;
 - tempo de execução de horas a dias para a pipeline completa, dependendo de filas de API e GPU.
 
-## Conteúdo congelado incluído
-
-O pacote copiado contém, entre outros:
+## Dataset congelado incluído
 
 - `outputs/dataset_frozen.parquet`;
 - `outputs/frozen_jsonl_artifacts.zip`;
@@ -169,19 +163,15 @@ OPENAI_API_KEY=...
 MARITACA_API_KEY=...
 ```
 
-Nenhuma chave real deve ser versionada ou enviada aos revisores dentro do repositório público. Quando o CTA precisar de acesso privado, use o apêndice conforme indicado em `APPENDIX_RECURSOS_RESTRICOES.md`.
-
 # Preocupações com segurança
 
-Este artefato contém prompts nocivos, respostas de modelos a tentativas de jailbreak e pontuações de conformidade insegura. Esses dados são necessários para auditar a metodologia, mas são material dual-use.
+Este artefato contém prompts nocivos, respostas de modelos a tentativas de jailbreak e pontuações de conformidade insegura.
 
 Cuidados recomendados:
 
 - não publicar trechos de prompts/respostas fora do contexto de avaliação;
 - não executar a geração contra APIs de produção sem limites de custo e monitoramento;
 - não reutilizar as respostas como instruções operacionais;
-- manter `.env`, chaves de API, tokens Hugging Face e exports brutos de billing fora do repositório;
-- executar a pipeline completa em ambiente isolado, preferencialmente VM ou container;
 - tratar provider blocks e falhas técnicas como metadados, não como recusas do modelo.
 
 O dataset congelado já inclui resultados suficientes para reproduzir as análises principais sem consultar modelos novamente. Esse é o caminho recomendado para a revisão inicial.
@@ -366,7 +356,7 @@ Resultado esperado:
 
 Objetivo: rerodar tradução, auditoria, geração, retrotradução, scoring, BELEBELE, congelamento e análise.
 
-Recursos: GPU NVIDIA, Docker, Hugging Face, OpenAI API, Maritaca API, disco para pesos de modelos e tempo substancial. Este experimento não é recomendado como primeiro teste do CTA.
+Recursos: GPU NVIDIA, Docker, Hugging Face, OpenAI API, Maritaca API, espaço em disco para pesos de modelos e tempo substancial. Este experimento não é recomendado como primeiro teste do CTA.
 
 Sequência de alto nível:
 
