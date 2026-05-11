@@ -5,7 +5,7 @@ Este apêndice acompanha o artefato `ufsc-thesis-sbseg2026` para a avaliação d
 ## Recursos privados necessários
 
 | Recurso | Necessário para |
-| --- | --- | --- |
+| --- | --- |
 | `HF_TOKEN` | baixar modelos/datasets gated no Hugging Face (opcional, mas aumenta a velocidade de download) |
 | `OPENAI_API_KEY` | scoring StrongREJECT e auditoria LLM opcional |
 | `MARITACA_API_KEY` | geração com Sabiá-3 |
