@@ -4,20 +4,19 @@ Este apêndice acompanha o artefato `ufsc-thesis-sbseg2026` para a avaliação d
 
 ## Recursos privados necessários
 
-| Recurso | Necessário para | Como fornecer aos revisores |
+| Recurso | Necessário para |
 | --- | --- | --- |
-| `HF_TOKEN` | baixar modelos/datasets gated no Hugging Face | token temporário com permissão mínima, se os revisores forem reexecutar downloads |
-| `OPENAI_API_KEY` | scoring StrongREJECT e auditoria LLM opcional | chave temporária com limite de gasto |
-| `MARITACA_API_KEY` | geração com Sabiá-3 | chave temporária com quota restrita |
-| GPU NVIDIA | NLLB/BLASER/vLLM e geração open-weight | máquina local dos revisores, cluster institucional ou instância cloud documentada |
+| `HF_TOKEN` | baixar modelos/datasets gated no Hugging Face (opcional, mas aumenta a velocidade de download) |
+| `OPENAI_API_KEY` | scoring StrongREJECT e auditoria LLM opcional |
+| `MARITACA_API_KEY` | geração com Sabiá-3 |
+| GPU NVIDIA com > 16 GB VRAM | NLLB/BLASER/vLLM e geração open-weight |
 
 ## Restrições conhecidas
 
 - A reprodução principal não exige GPU porque parte de `outputs/dataset_frozen.jsonl`.
 - A reprodução integral exige aceitar termos de uso de modelos e datasets externos.
-- A reprodução integral pode consumir recursos pagos em APIs e GPU.
+- A reprodução integral consome recursos pagos em APIs e GPU.
 - Sabiá-3 é API-served; respostas podem variar com a versão do provedor, filtros e data.
-- O pacote contém material dual-use de jailbreak. O compartilhamento deve ficar restrito ao contexto de avaliação.
 
 ## Ambiente de referência usado no experimento
 
@@ -42,11 +41,12 @@ Recomenda-se configurar:
 - logs redigidos para evitar vazamento de chaves;
 - armazenamento local criptografado caso sejam reexecutadas respostas nocivas.
 
-Arquivos em `usage/` são agregados/redigidos e existem apenas para contabilidade metodológica. Exports brutos de billing devem permanecer fora do repositório.
+Arquivos em `usage/` são agregados/redigidos e existem apenas para contabilidade metodológica.
+O custo total de execução da pipeline foi de R$ 1217,00.
 
 ## Procedimento sugerido ao CTA
 
 1. Executar o teste mínimo do README.
 2. Reproduzir as tabelas a partir de `outputs/dataset_frozen.jsonl`.
 3. Conferir uma amostra de linhas em `outputs/translations/`, `outputs/backtranslated/` e `outputs/scored/`.
-4. Solicitar recursos privados apenas se for necessário rerodar scoring, Sabiá-3 ou a pipeline completa.
+4. Solicitar recursos privados apenas se for necessário rerodar scoring, Sabiá-3 ou a pipeline completa, levando em consideração os custos associados.
