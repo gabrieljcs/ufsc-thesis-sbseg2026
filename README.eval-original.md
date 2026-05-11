@@ -39,24 +39,16 @@ eval/
 └── tests/
 ```
 
-Empty scaffold directories are not tracked. Pipeline commands create their
-output directories as needed.
+Empty scaffold directories are not tracked. Pipeline commands create their output directories as needed.
 
-The GitHub repository stores the largest JSONL artifacts as compressed archives
-to stay below GitHub's file-size limits. `outputs/frozen_jsonl_artifacts.zip`
-contains `outputs/dataset_frozen.jsonl` and
-`outputs/scored/all_strongreject_scores.jsonl`; `outputs/belebele_predictions_jsonl.zip`
-contains `outputs/spec/all_belebele_predictions.jsonl`. A local Parquet mirror,
-`outputs/dataset_frozen.parquet`, may be generated for faster analysis and can
-be included in an archived Zenodo package, but it is ignored by Git to avoid
-binary churn.
+The GitHub repository stores the largest JSONL artifacts as compressed archives to stay below GitHub's file-size limits.
+`outputs/frozen_jsonl_artifacts.zip` contains `outputs/dataset_frozen.jsonl` and `outputs/scored/all_strongreject_scores.jsonl`;
+`outputs/belebele_predictions_jsonl.zip` contains `outputs/spec/all_belebele_predictions.jsonl`.
+A local Parquet mirror, `outputs/dataset_frozen.parquet`, may be generated for faster analysis, but it is ignored by Git to avoid binary churn.
 
 ## Data Sources
 
-The release combines original experiment outputs with externally sourced
-benchmarks, model metadata, and derived diagnostics. The external sources are
-downloaded or imported by the commands in the pipeline rather than manually
-edited.
+The release combines original experiment outputs with externally sourced benchmarks, model metadata, and derived diagnostics. The external sources are downloaded or imported by the commands in the pipeline rather than manually edited.
 
 | Source | Role in this package | Stored artifacts | Notes |
 | --- | --- | --- | --- |
@@ -86,15 +78,9 @@ The checked final panel is:
 9 BELEBELE prediction files and 117 model-language SPEC rows
 ```
 
-The 48 translation exclusions are recorded in
-`outputs/translations/all_audited_translations.jsonl` and intentionally do not
-produce model-level generation rows. The 78 frozen-dataset exclusions are
-run-level failures after generation: 75 empty model outputs and three
-StrongREJECT judge safety-filter failures.
+The 48 translation exclusions are recorded in `outputs/translations/all_audited_translations.jsonl` and intentionally do not produce model-level generation rows. The 78 frozen-dataset exclusions are run-level failures after generation: 75 empty model outputs and three StrongREJECT judge safety-filter failures.
 
-For safety, the artifact contains harmful-prompt and model-output text because
-those fields are needed to audit scoring and translation behavior. Do not mirror
-the dataset in contexts where dual-use jailbreak material is inappropriate.
+For safety, the artifact contains harmful-prompt and model-output text because those fields are needed to audit scoring and translation behavior. Do not mirror the dataset in contexts where dual-use jailbreak material is inappropriate.
 
 ## Install
 
@@ -185,8 +171,7 @@ Each stage writes per-language or per-model files, so reruns of the same command
 
 ### Restore Archived JSONL Artifacts
 
-The GitHub release keeps the largest JSONL files zipped. To work from the
-checked artifact without rerunning model inference:
+The GitHub release keeps the largest JSONL files zipped. To work from the checked artifact without rerunning model inference:
 
 ```sh
 unzip -n outputs/frozen_jsonl_artifacts.zip
@@ -277,9 +262,7 @@ uv run thesis-eval-gpu translation-qc \
   --device cuda
 ```
 
-Create and import the translation audit decisions. The command below is the
-Plan B LLM-judge path; for Plan A, edit the exported CSVs with human XSTS
-decisions before `import-audit`.
+Create and import the LLM-judge translation audit decisions.
 
 ```sh
 for lang in "${LANGS[@]}"; do
@@ -317,8 +300,7 @@ uv run thesis-eval calibrate-blaser \
   --output outputs/audit/blaser_calibration.json
 ```
 
-Generate target responses. Sabiá-3 uses the Maritaca API; all other models use
-the GPU container and the selected runtime profile.
+Generate target responses. Sabiá-3 uses the Maritaca API; all other models use the GPU container and the selected runtime profile.
 
 ```sh
 AUDIT_ARGS=()
@@ -351,8 +333,7 @@ for model in "${MODELS[@]}"; do
 done
 ```
 
-Back-translate responses and score with StrongREJECT. The serial scoring path
-is simpler; the Batch path is better for a full run.
+Back-translate responses and score with StrongREJECT. The serial scoring path is simpler; the Batch path is better for a full run.
 
 ```sh
 GEN_ARGS=()
@@ -481,29 +462,7 @@ zip -9 outputs/belebele_predictions_jsonl.zip \
   outputs/spec/all_belebele_predictions.jsonl
 ```
 
-If generation was run with `--skip-tokenizer-metrics`, repair each generation
-file with `attach-tokenizer-metrics` before response back-translation.
-
-## Audit plans
-
-Two translation-audit paths are wired into `export-audit-queue`, `judge-audit-queue`, and `import-audit`. The LaTeX source picks one with the `\humanaudittrue` / `\humanauditfalse` flag in `ufscthesisx/main.tex`.
-
-| Plan | When | Audit method |
-| --- | --- | --- |
-| Plan B | default, deadline path | uncalibrated frontier multilingual LLM-as-judge XSTS over flagged rows |
-| Plan A | upgrade after human review | Tier A human XSTS for `ara bul ita por spa`; calibrated LLM XSTS for the rest |
-
-Audit decisions are pooled by `(target_language, prompt_id)` and applied to every downstream model that consumes that prompt-language pair. Finnish and Swahili are flagged as caveat languages in exported queues.
-
-Valid `audit_decision` values:
-
-```text
-pass     keep the translation
-revise   use the edited translated_text from the CSV
-exclude  drop the prompt-language pair from generation and analysis
-```
-
-Audit queues are written as UTF-8 with BOM. Reviewers must save with "CSV UTF-8 (Comma delimited)" in Excel; the plain CSV export uses cp1252 and mangles non-ASCII characters on the way back in.
+If generation was run with `--skip-tokenizer-metrics`, repair each generation file with `attach-tokenizer-metrics` before response back-translation.
 
 ## Outputs
 
@@ -520,12 +479,6 @@ outputs/
 ├── frozen_jsonl_artifacts.zip
 └── belebele_predictions_jsonl.zip
 ```
-
-`outputs/frozen_jsonl_artifacts.zip` and
-`outputs/belebele_predictions_jsonl.zip` store their JSONL members using the
-original repository paths.
-`outputs/dataset_frozen.parquet` is an optional local mirror of the JSONL
-dataset and is ignored by Git.
 
 The thesis Results chapter consumes this table bundle:
 
@@ -553,33 +506,6 @@ glmm_main_effects.csv
 ```
 
 `fit-glmm` and the slope-retention tables use only rows with `model_alignment_pole in {weak, strong}`; the reference baseline stays in the descriptive tables.
-
-## Zenodo Packaging Notes
-
-Recommended release contents:
-
-- Source code, configs, tests, scripts, and documentation.
-- `outputs/frozen_jsonl_artifacts.zip`,
-  `outputs/belebele_predictions_jsonl.zip`, or the corresponding unpacked JSONL
-  files plus the optional regenerated `outputs/dataset_frozen.parquet`.
-- Final retained stage outputs under `outputs/translations/`,
-  `outputs/audit/`, `outputs/generations/`, `outputs/backtranslated/`,
-  `outputs/scored/`, `outputs/spec/`, and `outputs/tables/`.
-- `data/uriel_plus/` and the StrongREJECT import if redistribution is allowed
-  by the source license.
-- Redacted aggregate cost metadata under `usage/`, if the cost-accounting
-  appendix is included in the archived package.
-
-Do not include local execution debris in the archival package:
-
-- `.DS_Store`, `.venv/`, `__pycache__/`, `.tmp_strongreject_tests/`.
-- `outputs/retry/`, `outputs/scored/redo/`, and any
-  `*.strongreject.strongreject.jsonl` files; these are intermediate repair
-  work products, not final panel artifacts.
-- `outputs/pilot/` and `outputs/figures/`; these are local smoke-test or
-  exploratory directories and are not part of the frozen artifact package.
-- Raw provider billing exports. Keep unredacted provider exports outside the
-  repository or under ignored paths such as `usage/raw/`.
 
 ## Validation
 
