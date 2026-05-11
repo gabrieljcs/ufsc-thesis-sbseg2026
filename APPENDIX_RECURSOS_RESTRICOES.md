@@ -1,32 +1,32 @@
-# Apendice - Recursos especificos e restricoes
+# Apêndice - Recursos específicos e restrições
 
-Este apendice acompanha o artefato `ufsc-thesis-sbseg2026` para a avaliacao do CTA/SBSeg 2026. Ele nao contem segredos. Chaves, contas temporarias ou creditos devem ser enviados aos revisores por canal privado da plataforma de submissao, quando necessario.
+Este apêndice acompanha o artefato `ufsc-thesis-sbseg2026` para a avaliação do CTA/SBSeg 2026. Ele não contém segredos. Chaves, contas temporárias ou créditos devem ser enviados aos revisores por canal privado da plataforma de submissão, quando necessário.
 
-## Recursos privados necessarios
+## Recursos privados necessários
 
-| Recurso | Necessario para | Como fornecer aos revisores |
+| Recurso | Necessário para | Como fornecer aos revisores |
 | --- | --- | --- |
-| `HF_TOKEN` | baixar modelos/datasets gated no Hugging Face | token temporario com permissao minima, se os revisores forem reexecutar downloads |
-| `OPENAI_API_KEY` | scoring StrongREJECT e auditoria LLM opcional | chave temporaria com limite de gasto |
-| `MARITACA_API_KEY` | geracao com Sabiá-3 | chave temporaria com quota restrita |
-| GPU NVIDIA | NLLB/BLASER/vLLM e geracao open-weight | maquina local dos revisores, cluster institucional, ou instancia cloud documentada |
+| `HF_TOKEN` | baixar modelos/datasets gated no Hugging Face | token temporário com permissão mínima, se os revisores forem reexecutar downloads |
+| `OPENAI_API_KEY` | scoring StrongREJECT e auditoria LLM opcional | chave temporária com limite de gasto |
+| `MARITACA_API_KEY` | geração com Sabiá-3 | chave temporária com quota restrita |
+| GPU NVIDIA | NLLB/BLASER/vLLM e geração open-weight | máquina local dos revisores, cluster institucional ou instância cloud documentada |
 
-## Restricoes conhecidas
+## Restrições conhecidas
 
-- A reproducao principal nao exige GPU porque parte de `outputs/dataset_frozen.jsonl`.
-- A reproducao integral exige aceitar termos de uso de modelos e datasets externos.
-- A reproducao integral pode consumir recursos pagos em APIs e GPU.
-- Sabiá-3 e API-served; respostas podem variar com a versao do provedor, filtros e data.
-- O pacote contem material dual-use de jailbreak. O compartilhamento deve ficar restrito ao contexto de avaliacao.
+- A reprodução principal não exige GPU porque parte de `outputs/dataset_frozen.jsonl`.
+- A reprodução integral exige aceitar termos de uso de modelos e datasets externos.
+- A reprodução integral pode consumir recursos pagos em APIs e GPU.
+- Sabiá-3 é API-served; respostas podem variar com a versão do provedor, filtros e data.
+- O pacote contém material dual-use de jailbreak. O compartilhamento deve ficar restrito ao contexto de avaliação.
 
-## Ambiente de referencia usado no experimento
+## Ambiente de referência usado no experimento
 
 O experimento foi desenhado para dois modos:
 
-- modo analise: Python 3.12 com `uv`, sem GPU;
+- modo análise: Python 3.12 com `uv`, sem GPU;
 - modo GPU: Docker baseado em `nvidia/cuda:12.8.1-cudnn-devel-ubuntu24.04`, `torch` CUDA e `vllm`.
 
-As configuracoes ficam em:
+As configurações ficam em:
 
 - `configs/runtime.yaml`;
 - `configs/models.yaml`;
@@ -38,16 +38,15 @@ As configuracoes ficam em:
 Recomenda-se configurar:
 
 - limites de billing para OpenAI e Maritaca;
-- quotas de requisicao conservadoras;
+- quotas de requisição conservadoras;
 - logs redigidos para evitar vazamento de chaves;
 - armazenamento local criptografado caso sejam reexecutadas respostas nocivas.
 
-Arquivos em `usage/` sao agregados/redigidos e existem apenas para contabilidade metodologica. Exports brutos de billing devem permanecer fora do repositorio.
+Arquivos em `usage/` são agregados/redigidos e existem apenas para contabilidade metodológica. Exports brutos de billing devem permanecer fora do repositório.
 
 ## Procedimento sugerido ao CTA
 
-1. Executar o teste minimo do README.
+1. Executar o teste mínimo do README.
 2. Reproduzir as tabelas a partir de `outputs/dataset_frozen.jsonl`.
 3. Conferir uma amostra de linhas em `outputs/translations/`, `outputs/backtranslated/` e `outputs/scored/`.
-4. Solicitar recursos privados apenas se for necessario rerodar scoring, Sabiá-3 ou a pipeline completa.
-
+4. Solicitar recursos privados apenas se for necessário rerodar scoring, Sabiá-3 ou a pipeline completa.
