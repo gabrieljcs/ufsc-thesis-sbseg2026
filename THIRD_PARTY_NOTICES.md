@@ -10,7 +10,5 @@ Os seguintes itens devem ser tratados conforme seus respectivos termos de origem
 - BLASER 2.0 QE: estimativa de qualidade de tradução.
 - URIEL+: matriz de distância tipológica.
 - Modelos hospedados no Hugging Face: pesos, tokenizadores e model cards.
-- OpenAI API: uso do juiz StrongREJECT e auditoria LLM opcional.
+- OpenAI API: uso do StrongREJECT e auditoria LLM opcional.
 - Maritaca API: acesso ao Sabiá-3.
-
-Os arquivos sob `outputs/` incluem resultados experimentais, traduções, retrotraduções, gerações de modelos e pontuações derivadas desses componentes. Eles são incluídos para revisão, auditoria e reprodutibilidade científica, mas não devem ser interpretados como re-licenciamento de conteúdo de terceiros.
