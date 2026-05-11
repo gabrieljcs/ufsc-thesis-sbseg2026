@@ -1,0 +1,5 @@
+﻿model_pair_language,weak_model,weak_distance_slope,weak_slope_sign,weak_n,strong_model,strong_distance_slope,strong_slope_sign,strong_n,slope_sign_retained
+bul,bggpt_7b,-0.6596796547747604,-1,4021,bggpt_gemma_9b,0.09729013053844378,1,3952,False
+ita,llamantino_2_ultrachat_7b,-0.33830066276149273,-1,4015,llamantino_anita_8b,0.16364250539541658,1,4021,False
+por,sagui_7b,-0.8074994940753916,-1,4021,sabia_3,0.37587860352192415,1,4019,False
+swe,gpt_sw3,-0.6671945975295811,-1,4021,ai_sweden_llama3_8b,-0.772203081232703,-1,4020,True

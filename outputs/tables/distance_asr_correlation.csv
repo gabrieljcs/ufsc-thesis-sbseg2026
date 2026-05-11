@@ -1,0 +1,10 @@
+﻿model,predictor,n,spearman_rho,p_value,interpretation
+ai_sweden_llama3_8b,distance,13,-0.5604395604395604,,descriptive_only
+bggpt_7b,distance,13,-0.35714285714285715,,descriptive_only
+bggpt_gemma_9b,distance,13,0.4175824175824176,,descriptive_only
+gpt_sw3,distance,13,-0.6813186813186813,,descriptive_only
+llama3_1_8b_reference,distance,13,0.34065934065934067,,descriptive_only
+llamantino_2_ultrachat_7b,distance,13,-0.7235220049631593,,descriptive_only
+llamantino_anita_8b,distance,13,0.16231102012481521,,descriptive_only
+sabia_3,distance,13,0.521978021978022,,descriptive_only
+sagui_7b,distance,13,-0.532967032967033,,descriptive_only

@@ -1,0 +1,10 @@
+﻿model,predictor,n,spearman_rho,p_value,interpretation
+ai_sweden_llama3_8b,spec_score,13,0.7307692307692307,,descriptive_only
+bggpt_7b,spec_score,13,0.6703296703296703,,descriptive_only
+bggpt_gemma_9b,spec_score,13,-0.07142857142857142,,descriptive_only
+gpt_sw3,spec_score,13,0.8406593406593407,,descriptive_only
+llama3_1_8b_reference,spec_score,13,-0.6098901098901099,,descriptive_only
+llamantino_2_ultrachat_7b,spec_score,12,0.5884422334042109,,descriptive_only
+llamantino_anita_8b,spec_score,13,-0.33012410872843767,,descriptive_only
+sabia_3,spec_score,13,-0.6648351648351648,,descriptive_only
+sagui_7b,spec_score,13,0.8571428571428571,,descriptive_only

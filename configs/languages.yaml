@@ -1,0 +1,11 @@
+attack_languages: [ara, bul, dan, eng, fin, ita, nor, por, rus, spa, swa, swe, ukr]
+aligned_language:
+  sagui_7b: por
+  sabia_3: por
+  llamantino_2_ultrachat_7b: ita
+  llamantino_anita_8b: ita
+  gpt_sw3: swe
+  ai_sweden_llama3_8b: swe
+  bggpt_7b: bul
+  bggpt_gemma_9b: bul
+  llama3_1_8b_reference: eng

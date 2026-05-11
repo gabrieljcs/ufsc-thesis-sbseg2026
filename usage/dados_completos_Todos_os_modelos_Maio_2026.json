@@ -1,0 +1,780 @@
+{
+  "metadata": {
+    "periodo": "Maio/2026",
+    "modelo": "Todos os modelos",
+    "exportado_em": "2026-05-10T02:46:54.499Z",
+    "api_key_scope": "redacted aggregate",
+    "user_scope": "redacted aggregate"
+  },
+  "resumo": {
+    "saldo_disponivel": 27.46310374999949,
+    "gastos_periodo": 37.89627125000007,
+    "total_requisicoes": 31450,
+    "total_tokens_input": 5161721,
+    "total_tokens_output": 1975916,
+    "total_tokens_em_cache": 1555093,
+    "custo_horario_pico": 13.516565000000057,
+    "custo_noturno": 22.435840000000006,
+    "custo_batch_api": 0,
+    "custo_flex": 0,
+    "custo_tokens_em_cache": 1.94386625000001,
+    "custo_extracao_arquivos": 0
+  },
+  "requisicoes_diarias": [
+    {
+      "data": "01/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "02/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "03/05",
+      "horario_pico": 576,
+      "fora_horario_pico": 3445,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 4021
+    },
+    {
+      "data": "04/05",
+      "horario_pico": 11708,
+      "fora_horario_pico": 4021,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 15729
+    },
+    {
+      "data": "05/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "06/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 8630,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 8630
+    },
+    {
+      "data": "07/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 3070,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 3070
+    },
+    {
+      "data": "08/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "09/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "10/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "11/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "12/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "13/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "14/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "15/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "16/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "17/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "18/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "19/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "20/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "21/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "22/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "23/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "24/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "25/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "26/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "27/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "28/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "29/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "30/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    },
+    {
+      "data": "31/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "flex": 0,
+      "total": 0
+    }
+  ],
+  "gastos_diarios": [
+    {
+      "data": "01/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "02/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "03/05",
+      "horario_pico": 1.1865700000000003,
+      "fora_horario_pico": 6.423444999999995,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 7.610014999999995
+    },
+    {
+      "data": "04/05",
+      "horario_pico": 12.329995000000057,
+      "fora_horario_pico": 7.2399915,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 19.569986500000056
+    },
+    {
+      "data": "05/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "06/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 6.234420500000013,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 6.234420500000013
+    },
+    {
+      "data": "07/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 2.537982999999998,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 2.537982999999998
+    },
+    {
+      "data": "08/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "09/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "10/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "11/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "12/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "13/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "14/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "15/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "16/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "17/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "18/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "19/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "20/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "21/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "22/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "23/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "24/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "25/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "26/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "27/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "28/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "29/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "30/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    },
+    {
+      "data": "31/05",
+      "horario_pico": 0,
+      "fora_horario_pico": 0,
+      "batch_api": 0,
+      "extracao_arquivos": 0,
+      "tokens_em_cache": 0,
+      "total": 0
+    }
+  ],
+  "tokens_diarios": [
+    {
+      "data": "01/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "02/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "03/05",
+      "tokens_input": 205464,
+      "tokens_em_cache": 21,
+      "tokens_output": 933560,
+      "total": 1139045
+    },
+    {
+      "data": "04/05",
+      "tokens_input": 2525282,
+      "tokens_em_cache": 775780,
+      "tokens_output": 1004643,
+      "total": 4305705
+    },
+    {
+      "data": "05/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "06/05",
+      "tokens_input": 1725323,
+      "tokens_em_cache": 543724,
+      "tokens_output": 27970,
+      "total": 2297017
+    },
+    {
+      "data": "07/05",
+      "tokens_input": 705652,
+      "tokens_em_cache": 235568,
+      "tokens_output": 9743,
+      "total": 950963
+    },
+    {
+      "data": "08/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "09/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "10/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "11/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "12/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "13/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "14/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "15/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "16/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "17/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "18/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "19/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "20/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "21/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "22/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "23/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "24/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "25/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "26/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "27/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "28/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "29/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "30/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    },
+    {
+      "data": "31/05",
+      "tokens_input": 0,
+      "tokens_em_cache": 0,
+      "tokens_output": 0,
+      "total": 0
+    }
+  ],
+  "custo_por_modelo": [
+    {
+      "modelo": "sabia-3",
+      "custo": 37.8963
+    }
+  ],
+  "redaction_note": "Provider account identifiers, organization/project identifiers, user identifiers, API-key identifiers, and per-key/per-user breakdowns were removed before archival release."
+}

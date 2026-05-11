@@ -1,0 +1,26 @@
+profiles:
+  macbook:
+    target_backend: transformers
+    device: auto
+    dtype: auto
+    notes: "Apple Silicon path. Use mock pilot by default; use transformers for optional tiny real tests."
+  rtx_5070_ti:
+    target_backend: vllm
+    device: cuda
+    dtype: auto
+    notes: "Local Linux/Docker CUDA path with vLLM. Use for light GPU checks and StrongREJECT scoring."
+  runpod_a100:
+    target_backend: vllm
+    device: cuda
+    dtype: auto
+    notes: "RunPod CUDA pod profile for A100/H100-class rented GPUs. Primary path for pending BELEBELE and target generations."
+  tpu:
+    target_backend: transformers
+    device: xla
+    dtype: bfloat16
+    notes: "PyTorch/XLA path for TPU-backed runs such as BELEBELE multiple-choice prediction."
+  trc_tpu:
+    target_backend: transformers
+    device: xla
+    dtype: bfloat16
+    notes: "Google TPU Research Cloud VM path via PyTorch/XLA. Use for BELEBELE prediction on TRC."

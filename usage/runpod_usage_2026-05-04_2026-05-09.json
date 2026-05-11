@@ -1,0 +1,71 @@
+{
+  "data": [
+    {
+      "date": "2026-05-09",
+      "total": 0.058,
+      "gpuCloud": 0,
+      "cpuCloud": 0,
+      "endpoint": 0,
+      "serverless": 0,
+      "storage": 0.058,
+      "savingPlans": 0,
+      "cluster": 0
+    },
+    {
+      "date": "2026-05-08",
+      "total": 0.467,
+      "gpuCloud": 0,
+      "cpuCloud": 0,
+      "endpoint": 0,
+      "serverless": 0,
+      "storage": 0.467,
+      "savingPlans": 0,
+      "cluster": 0
+    },
+    {
+      "date": "2026-05-07",
+      "total": 0.486,
+      "gpuCloud": 0,
+      "cpuCloud": 0,
+      "endpoint": 0,
+      "serverless": 0,
+      "storage": 0.486,
+      "savingPlans": 0,
+      "cluster": 0
+    },
+    {
+      "date": "2026-05-06",
+      "total": 13.141,
+      "gpuCloud": 12.558,
+      "cpuCloud": 0,
+      "endpoint": 0,
+      "serverless": 0,
+      "storage": 0.582,
+      "savingPlans": 0,
+      "cluster": 0
+    },
+    {
+      "date": "2026-05-05",
+      "total": 29.685,
+      "gpuCloud": 28.891,
+      "cpuCloud": 0,
+      "endpoint": 0,
+      "serverless": 0,
+      "storage": 0.794,
+      "savingPlans": 0,
+      "cluster": 0
+    },
+    {
+      "date": "2026-05-04",
+      "total": 22.656,
+      "gpuCloud": 22.293,
+      "cpuCloud": 0,
+      "endpoint": 0,
+      "serverless": 0,
+      "storage": 0.363,
+      "savingPlans": 0,
+      "cluster": 0
+    }
+  ],
+  "redaction_note": "Provider account identifiers, organization/project identifiers, user identifiers, API-key identifiers, and per-key/per-user breakdowns were removed before archival release."
+}

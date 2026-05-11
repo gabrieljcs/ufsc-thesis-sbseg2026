@@ -1,0 +1,2 @@
+source,date,base_currency,quote_currency,rate_type,cotacao_compra,cotacao_venda,data_hora_cotacao,accessed_at
+Banco Central do Brasil PTAX,2026-05-08,USD,BRL,Fechamento,4.8993,4.8999,2026-05-08 13:05:32.403,2026-05-10

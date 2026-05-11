@@ -1,0 +1,4 @@
+predictor,estimate,std_error,odds_ratio,p_value,fit_method,n,warnings
+distance_z,-0.10950146360670164,0.014945577839246013,0.8962808525584867,,statsmodels_binomial_bayes_mixed_glm_vb,31778,
+if_z,0.5041095533157416,0.014551619122371679,1.6555107199113688,,statsmodels_binomial_bayes_mixed_glm_vb,31778,
+cons_z,0.6891599471749597,0.015441330574731628,1.9920414101514219,,statsmodels_binomial_bayes_mixed_glm_vb,31778,

@@ -1,0 +1,68 @@
+[project]
+name = "thesis-eval"
+version = "0.0.1"
+description = "Cross-lingual jailbreak evaluation of language-specific LLMs"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "pyyaml>=6.0",
+  "requests>=2.31",
+  "datasets>=2.20",
+  "huggingface_hub[hf_xet]>=0.24",
+  "numpy>=1.26",
+  "pandas>=2.2",
+]
+
+[project.optional-dependencies]
+uriel = [
+  "urielplus>=1.2; python_version < '3.12'",
+]
+qc = [
+  "torch==2.8.0",
+  "fairseq2>=0.5.2; sys_platform != 'win32'",
+  "sonar-space>=0.5,<0.6; sys_platform != 'win32'",
+]
+mac = [
+  "torch==2.8.0",
+  "transformers>=4.46",
+  "accelerate>=1.0",
+  "sentencepiece>=0.2",
+  "sacrebleu>=2.4",
+]
+rtx = [
+  "torch==2.8.0",
+  "vllm>=0.9; sys_platform != 'win32'",
+  "transformers>=4.46",
+  "accelerate>=1.0",
+  "sentencepiece>=0.2",
+  "sacrebleu>=2.4",
+]
+scoring = [
+  "strong-reject @ git+https://github.com/dsbowen/strong_reject.git@main",
+]
+analysis = [
+  "statsmodels>=0.14",
+  "scipy>=1.12",
+  "pyarrow>=15",
+]
+test = []
+
+[project.scripts]
+thesis-eval = "thesis_eval.cli:main"
+thesis-eval-gpu = "thesis_eval.gpu_runner:main"
+
+[tool.uv]
+environments = [
+  "sys_platform == 'darwin'",
+  "sys_platform == 'linux'",
+  "sys_platform == 'win32'",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/thesis_eval"]

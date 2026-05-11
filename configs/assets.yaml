@@ -1,0 +1,286 @@
+assets:
+  strongreject:
+    kind: strongreject
+    group: datasets
+    groups: [datasets, jailbreaks]
+    source: github
+    output: data/raw/strongreject/prompts.jsonl
+    pilot_output: data/raw/strongreject/pilot_prompts.jsonl
+    pilot_size: 2
+    required_files: [data/raw/strongreject/prompts.jsonl, data/raw/strongreject/pilot_prompts.jsonl]
+    required_columns: [prompt_id, text, harmful_goal, expected_output_form, fixed_constraints, allowed_adaptation, benchmark]
+    description: "Primary forbidden-prompt source. The prompt list is imported here; StrongREJECT response scoring is implemented in the evaluation module."
+  multijail:
+    kind: hf_dataset
+    group: datasets
+    groups: [datasets, jailbreaks]
+    repo_id: walledai/MultiJail
+    local_dir: assets/datasets/multijail
+    required_files: [assets/datasets/multijail/README.md]
+    description: "External multilingual validation benchmark."
+  belebele:
+    kind: hf_dataset
+    group: datasets
+    groups: [datasets, specialization]
+    repo_id: facebook/belebele
+    local_dir: assets/datasets/belebele
+    required_files: [assets/datasets/belebele/README.md]
+    description: "Benign multilingual reading-comprehension benchmark for IF/CONS/SPEC."
+  nllb_200:
+    kind: hf_model
+    group: translation
+    groups: [translation]
+    repo_id: facebook/nllb-200-distilled-600M
+    local_dir: assets/models/nllb-200-distilled-600M
+    required_files: [assets/models/nllb-200-distilled-600M/config.json, assets/models/nllb-200-distilled-600M/tokenizer_config.json]
+    required_any_files: [[assets/models/nllb-200-distilled-600M/pytorch_model.bin, assets/models/nllb-200-distilled-600M/pytorch_model.bin.index.json, assets/models/nllb-200-distilled-600M/model.safetensors, assets/models/nllb-200-distilled-600M/model.safetensors.index.json]]
+    allow_patterns:
+      - config.json
+      - generation_config.json
+      - tokenizer_config.json
+      - special_tokens_map.json
+      - tokenizer.json
+      - sentencepiece.bpe.model
+      - pytorch_model.bin
+      - pytorch_model-*.bin
+      - pytorch_model.bin.index.json
+      - model.safetensors
+      - model-*.safetensors
+      - model.safetensors.index.json
+    description: "NLLB-200 translator checkpoint for controlled prompt translation."
+  nllb_200_1_3b:
+    kind: hf_model
+    group: translation
+    groups: [translation]
+    repo_id: facebook/nllb-200-1.3B
+    local_dir: assets/models/nllb-200-1.3B
+    required_files: [assets/models/nllb-200-1.3B/config.json, assets/models/nllb-200-1.3B/tokenizer_config.json]
+    required_any_files: [[assets/models/nllb-200-1.3B/pytorch_model.bin, assets/models/nllb-200-1.3B/pytorch_model.bin.index.json, assets/models/nllb-200-1.3B/model.safetensors, assets/models/nllb-200-1.3B/model.safetensors.index.json]]
+    allow_patterns:
+      - config.json
+      - generation_config.json
+      - tokenizer_config.json
+      - special_tokens_map.json
+      - tokenizer.json
+      - sentencepiece.bpe.model
+      - pytorch_model.bin
+      - pytorch_model-*.bin
+      - pytorch_model.bin.index.json
+      - model.safetensors
+      - model-*.safetensors
+      - model.safetensors.index.json
+    description: "Larger NLLB-200 1.3B translator checkpoint. Heavier but still smaller than the 3.3B model."
+  nllb_200_3_3b:
+    kind: hf_model
+    group: translation
+    groups: [translation]
+    repo_id: facebook/nllb-200-3.3B
+    local_dir: assets/models/nllb-200-3.3B
+    required_files: [assets/models/nllb-200-3.3B/config.json, assets/models/nllb-200-3.3B/tokenizer_config.json]
+    required_any_files: [[assets/models/nllb-200-3.3B/pytorch_model.bin, assets/models/nllb-200-3.3B/pytorch_model.bin.index.json, assets/models/nllb-200-3.3B/model.safetensors, assets/models/nllb-200-3.3B/model.safetensors.index.json]]
+    allow_patterns:
+      - config.json
+      - generation_config.json
+      - tokenizer_config.json
+      - special_tokens_map.json
+      - tokenizer.json
+      - sentencepiece.bpe.model
+      - pytorch_model.bin
+      - pytorch_model-*.bin
+      - pytorch_model.bin.index.json
+      - model.safetensors
+      - model-*.safetensors
+      - model.safetensors.index.json
+    description: "Largest official NLLB-200 translator checkpoint. Use on the RTX machine if the 600M/1.3B translations are insufficient."
+  blaser_2_0_qe:
+    kind: hf_model
+    group: translation
+    groups: [translation]
+    repo_id: facebook/blaser-2.0-qe
+    local_dir: assets/models/blaser-2.0-qe
+    required_files: [assets/models/blaser-2.0-qe/README.md, assets/models/blaser-2.0-qe/model.pt]
+    allow_patterns:
+      - README.md
+      - config.json
+      - '*.json'
+      - '*.model'
+      - '*.spm'
+      - '*.pt'
+      - '*.bin'
+      - '*.safetensors'
+    description: "BLASER 2.0 reference-free QE checkpoint. SONAR runtime assets may be fetched separately by the SONAR package."
+  sagui_7b:
+    kind: hf_model
+    group: targets
+    groups: [targets]
+    repo_id: OliveiraJLT/Sagui-7B-Instruct-v0.1
+    local_dir: assets/models/sagui-7b-instruct-v0.1
+    required_files: [assets/models/sagui-7b-instruct-v0.1/config.json]
+    required_any_files: [[assets/models/sagui-7b-instruct-v0.1/model.safetensors.index.json, assets/models/sagui-7b-instruct-v0.1/model.safetensors]]
+    allow_patterns:
+      - .gitattributes
+      - README.md
+      - config.json
+      - generation_config.json
+      - tokenizer_config.json
+      - special_tokens_map.json
+      - tokenizer.json
+      - tokenizer.model
+      - model.safetensors
+      - model-*.safetensors
+      - model.safetensors.index.json
+    description: "Portuguese-aligned instruction-tuned target model fine-tuned from Sabiá-7B."
+  sabia_3:
+    kind: api_model
+    group: targets
+    groups: [targets, api_targets]
+    repo_id: sabia-3
+    description: "Portuguese-aligned Sabiá-3 target model served by the Maritaca API."
+  llamantino_2_ultrachat_7b:
+    kind: hf_model
+    group: targets
+    groups: [targets]
+    repo_id: swap-uniba/LLaMAntino-2-chat-7b-hf-UltraChat-ITA
+    local_dir: assets/models/llamantino-2-chat-7b-hf-ultrachat-ita
+    required_files: [assets/models/llamantino-2-chat-7b-hf-ultrachat-ita/config.json]
+    required_any_files: [[assets/models/llamantino-2-chat-7b-hf-ultrachat-ita/model.safetensors.index.json, assets/models/llamantino-2-chat-7b-hf-ultrachat-ita/model.safetensors]]
+    allow_patterns:
+      - .gitattributes
+      - README.md
+      - config.json
+      - generation_config.json
+      - tokenizer_config.json
+      - special_tokens_map.json
+      - tokenizer.json
+      - tokenizer.model
+      - model.safetensors
+      - model-*.safetensors
+      - model.safetensors.index.json
+    description: "Italian weak-pole merged LLaMAntino-2 UltraChat SFT target model."
+  llamantino_anita_8b:
+    kind: hf_model
+    group: targets
+    groups: [targets]
+    repo_id: swap-uniba/LLaMAntino-3-ANITA-8B-Inst-DPO-ITA
+    local_dir: assets/models/llamantino-3-anita-8b-inst-dpo-ita
+    required_files: [assets/models/llamantino-3-anita-8b-inst-dpo-ita/config.json]
+    required_any_files: [[assets/models/llamantino-3-anita-8b-inst-dpo-ita/model.safetensors.index.json, assets/models/llamantino-3-anita-8b-inst-dpo-ita/model.safetensors]]
+    allow_patterns:
+      - .gitattributes
+      - LICENSE.txt
+      - README.md
+      - USE_POLICY.md
+      - config.json
+      - generation_config.json
+      - tokenizer_config.json
+      - special_tokens_map.json
+      - tokenizer.json
+      - model.safetensors
+      - model-*.safetensors
+      - model.safetensors.index.json
+    description: "Italian strong-pole instruction-tuned target model."
+  gpt_sw3:
+    kind: hf_model
+    group: targets
+    groups: [targets]
+    repo_id: AI-Sweden-Models/gpt-sw3-6.7b-v2-instruct
+    local_dir: assets/models/gpt-sw3-6.7b-v2-instruct
+    required_files: [assets/models/gpt-sw3-6.7b-v2-instruct/config.json]
+    required_any_files: [[assets/models/gpt-sw3-6.7b-v2-instruct/model.safetensors.index.json, assets/models/gpt-sw3-6.7b-v2-instruct/model.safetensors]]
+    allow_patterns:
+      - .gitattributes
+      - GPT-SW3_MODEL_GUIDELINES
+      - LICENSE
+      - README.md
+      - config.json
+      - tokenizer_config.json
+      - spiece.model
+      - model.safetensors
+      - model-*.safetensors
+      - model.safetensors.index.json
+    description: "Swedish-aligned target model."
+  ai_sweden_llama3_8b:
+    kind: hf_model
+    group: targets
+    groups: [targets]
+    repo_id: AI-Sweden-Models/Llama-3-8B-instruct
+    local_dir: assets/models/ai-sweden-llama-3-8b-instruct
+    required_files: [assets/models/ai-sweden-llama-3-8b-instruct/config.json]
+    required_any_files: [[assets/models/ai-sweden-llama-3-8b-instruct/model.safetensors.index.json, assets/models/ai-sweden-llama-3-8b-instruct/model.safetensors]]
+    allow_patterns:
+      - .gitattributes
+      - README.md
+      - config.json
+      - generation_config.json
+      - tokenizer_config.json
+      - special_tokens_map.json
+      - tokenizer.json
+      - model.safetensors
+      - model-*.safetensors
+      - model.safetensors.index.json
+    description: "Swedish strong-pole instruction-tuned target model."
+  bggpt_7b:
+    kind: hf_model
+    group: targets
+    groups: [targets]
+    repo_id: INSAIT-Institute/BgGPT-7B-Instruct-v0.2
+    local_dir: assets/models/bggpt-7b-instruct-v0.2
+    required_files: [assets/models/bggpt-7b-instruct-v0.2/config.json]
+    required_any_files: [[assets/models/bggpt-7b-instruct-v0.2/model.safetensors.index.json, assets/models/bggpt-7b-instruct-v0.2/model.safetensors]]
+    allow_patterns:
+      - .gitattributes
+      - README.md
+      - config.json
+      - generation_config.json
+      - tokenizer_config.json
+      - special_tokens_map.json
+      - tokenizer.json
+      - tokenizer.model
+      - model.safetensors
+      - model-*.safetensors
+      - model.safetensors.index.json
+    description: "Bulgarian-aligned target model."
+  bggpt_gemma_9b:
+    kind: hf_model
+    group: targets
+    groups: [targets]
+    repo_id: INSAIT-Institute/BgGPT-Gemma-2-9B-IT-v1.0
+    local_dir: assets/models/bggpt-gemma-2-9b-it-v1.0
+    required_files: [assets/models/bggpt-gemma-2-9b-it-v1.0/config.json]
+    required_any_files: [[assets/models/bggpt-gemma-2-9b-it-v1.0/model.safetensors.index.json, assets/models/bggpt-gemma-2-9b-it-v1.0/model.safetensors]]
+    allow_patterns:
+      - .gitattributes
+      - LICENSE
+      - README.md
+      - config.json
+      - generation_config.json
+      - tokenizer_config.json
+      - special_tokens_map.json
+      - tokenizer.json
+      - tokenizer.model
+      - model.safetensors
+      - model-*.safetensors
+      - model.safetensors.index.json
+    description: "Bulgarian strong-pole instruction-tuned target model."
+  llama3_1_8b_reference:
+    kind: hf_model
+    group: targets
+    groups: [targets, reference_targets]
+    repo_id: meta-llama/Llama-3.1-8B-Instruct
+    local_dir: assets/models/llama-3.1-8b-instruct
+    required_files: [assets/models/llama-3.1-8b-instruct/config.json]
+    required_any_files: [[assets/models/llama-3.1-8b-instruct/model.safetensors.index.json, assets/models/llama-3.1-8b-instruct/model.safetensors]]
+    allow_patterns:
+      - .gitattributes
+      - LICENSE
+      - README.md
+      - USE_POLICY.md
+      - config.json
+      - generation_config.json
+      - tokenizer_config.json
+      - special_tokens_map.json
+      - tokenizer.json
+      - model.safetensors
+      - model-*.safetensors
+      - model.safetensors.index.json
+    description: "English-aligned LLaMA-3.1 8B reference baseline; descriptive only, excluded from paired-design inferential models."

@@ -1,0 +1,31 @@
+{
+  "aggregation": "U",
+  "cache": false,
+  "codes": "Iso",
+  "coverage_count": 3357,
+  "distance_metric": "angular",
+  "distance_type": "featural",
+  "execution_backend": "uv",
+  "fill_with_base_lang": true,
+  "generator": "thesis-eval prepare-uriel",
+  "languages_iso": [
+    "ara",
+    "bul",
+    "dan",
+    "eng",
+    "fin",
+    "ita",
+    "nor",
+    "por",
+    "rus",
+    "spa",
+    "swa",
+    "swe",
+    "ukr"
+  ],
+  "missing_languages": [],
+  "python_executable": "C:\\Users\\Gabriel\\AppData\\Local\\uv\\cache\\environments-v2\\compute-urielplus-5ace1f567df1eeaf\\Scripts\\python.exe",
+  "source": "urielplus",
+  "urielplus_script": "C:\\Users\\Gabriel\\Desktop\\ufsc-thesis\\scripts\\compute_urielplus.py",
+  "urielplus_version": "1.1"
+}

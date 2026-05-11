@@ -1,0 +1,11 @@
+model,aligned_language,language,item_id,gold,aligned_prediction,language_prediction,if_hit,cons_hit,note
+sagui_7b,por,por,belebele_0001,A,C,C,False,True,"aligned miss, consistent"
+sagui_7b,por,swa,belebele_0002,A,C,A,True,False,"cross-lingual hit, inconsistent"
+sabia_3,por,por,belebele_0003,B,B,B,True,True,"aligned hit, consistent"
+sabia_3,por,swa,belebele_0004,B,B,D,False,False,"cross-lingual miss, inconsistent"
+llamantino_anita_8b,ita,ita,belebele_0006,D,D,D,True,True,"aligned hit, consistent"
+llamantino_anita_8b,ita,rus,belebele_0025,C,C,A,False,False,"cross-lingual miss, inconsistent"
+bggpt_7b,bul,bul,belebele_0005,C,C,C,True,True,"aligned hit, consistent"
+bggpt_gemma_9b,bul,swe,belebele_0011,B,C,B,True,False,"cross-lingual hit, inconsistent"
+ai_sweden_llama3_8b,swe,swe,belebele_0023,B,C,C,False,True,"aligned miss, consistent"
+ai_sweden_llama3_8b,swe,dan,belebele_0029,B,C,B,True,False,"near-neighbor hit, inconsistent"

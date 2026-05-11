@@ -1,0 +1,32 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+.ipynb_checkpoints/
+.claude/
+*.parquet
+!outputs/dataset_frozen.parquet
+.tmp_strongreject_tests/
+TODO.md
+runbooks/
+usage/raw/
+usage/*unredacted*
+usage/*private*
+
+# Ignore generated artifacts and downloaded data. Per-leaf patterns are used
+# because git negations can't re-include files inside an excluded directory.
+data/raw/strongreject/*
+data/raw/multijail/*
+data/raw/belebele/*
+data/translations/*
+outputs/figures/*
+outputs/pilot/*
+outputs/retry/
+outputs/dataset_frozen.jsonl
+outputs/scored/redo/
+outputs/scored/all_strongreject_scores.jsonl
+outputs/scored/*.strongreject.strongreject.jsonl
+outputs/spec/all_belebele_predictions.jsonl
+outputs/zenodo_bundle/
+assets/*

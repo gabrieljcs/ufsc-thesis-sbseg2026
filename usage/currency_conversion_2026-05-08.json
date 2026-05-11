@@ -1,0 +1,13 @@
+{
+  "source": "Banco Central do Brasil PTAX",
+  "date": "2026-05-08",
+  "base_currency": "USD",
+  "quote_currency": "BRL",
+  "rate_type": "Fechamento",
+  "cotacao_compra": 4.8993,
+  "cotacao_venda": 4.8999,
+  "data_hora_cotacao": "2026-05-08 13:05:32.403",
+  "accessed_at": "2026-05-10",
+  "conversion_policy": "Costs are displayed in native provider currency and converted both ways using cotacaoVenda, the PTAX closing sell rate, because USD-native costs are converted to BRL and BRL-native Sabiá-3 costs are converted to USD for an itemized total.",
+  "redaction_note": "Provider account identifiers, organization/project identifiers, user identifiers, API-key identifiers, and per-key/per-user breakdowns were removed before archival release."
+}

@@ -1,0 +1,3 @@
+fit,predictor,estimate,std_error,odds_ratio,n_cells,n_responses
+aggregated_cell_glm_hc1,distance_z,-0.06108080552207086,0.09503675685840797,0.9407472191344284,103,31778
+aggregated_cell_glm_hc1,spec_z,1.2432883416630247,0.2790309653211458,3.4669954060898434,103,31778

@@ -1,0 +1,73 @@
+sagui_7b:
+  hf_id: OliveiraJLT/Sagui-7B-Instruct-v0.1
+  provider_model_id: OliveiraJLT/Sagui-7B-Instruct-v0.1
+  display_name: Sagui-7B-Instruct-v0.1
+  pair_language: por
+  alignment_pole: weak
+  access_mode: open_weight
+  aligned_language: por
+sabia_3:
+  provider: maritaca
+  provider_model_id: sabia-3
+  display_name: Sabiá-3
+  pair_language: por
+  alignment_pole: strong
+  access_mode: api
+  aligned_language: por
+llamantino_2_ultrachat_7b:
+  hf_id: swap-uniba/LLaMAntino-2-chat-7b-hf-UltraChat-ITA
+  provider_model_id: swap-uniba/LLaMAntino-2-chat-7b-hf-UltraChat-ITA
+  display_name: LLaMAntino-2-chat-7b-hf-UltraChat-ITA
+  pair_language: ita
+  alignment_pole: weak
+  access_mode: open_weight
+  aligned_language: ita
+llamantino_anita_8b:
+  hf_id: swap-uniba/LLaMAntino-3-ANITA-8B-Inst-DPO-ITA
+  provider_model_id: swap-uniba/LLaMAntino-3-ANITA-8B-Inst-DPO-ITA
+  display_name: LLaMAntino-3-ANITA-8B-Inst-DPO-ITA
+  pair_language: ita
+  alignment_pole: strong
+  access_mode: open_weight
+  aligned_language: ita
+gpt_sw3:
+  hf_id: AI-Sweden-Models/gpt-sw3-6.7b-v2-instruct
+  provider_model_id: AI-Sweden-Models/gpt-sw3-6.7b-v2-instruct
+  display_name: GPT-SW3-6.7B-v2-instruct
+  pair_language: swe
+  alignment_pole: weak
+  access_mode: open_weight
+  aligned_language: swe
+ai_sweden_llama3_8b:
+  hf_id: AI-Sweden-Models/Llama-3-8B-instruct
+  provider_model_id: AI-Sweden-Models/Llama-3-8B-instruct
+  display_name: AI-Sweden Llama-3-8B-instruct
+  pair_language: swe
+  alignment_pole: strong
+  access_mode: open_weight
+  aligned_language: swe
+bggpt_7b:
+  hf_id: INSAIT-Institute/BgGPT-7B-Instruct-v0.2
+  provider_model_id: INSAIT-Institute/BgGPT-7B-Instruct-v0.2
+  display_name: BgGPT-7B-Instruct-v0.2
+  pair_language: bul
+  alignment_pole: weak
+  access_mode: open_weight
+  aligned_language: bul
+bggpt_gemma_9b:
+  hf_id: INSAIT-Institute/BgGPT-Gemma-2-9B-IT-v1.0
+  provider_model_id: INSAIT-Institute/BgGPT-Gemma-2-9B-IT-v1.0
+  display_name: BgGPT-Gemma-2-9B-IT-v1.0
+  pair_language: bul
+  alignment_pole: strong
+  access_mode: open_weight
+  aligned_language: bul
+llama3_1_8b_reference:
+  hf_id: meta-llama/Llama-3.1-8B-Instruct
+  provider_model_id: meta-llama/Llama-3.1-8B-Instruct
+  display_name: LLaMA-3.1-8B-Instruct
+  pair_language: eng
+  alignment_pole: reference
+  analysis_role: reference_baseline
+  access_mode: open_weight
+  aligned_language: eng
