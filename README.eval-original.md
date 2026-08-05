@@ -167,7 +167,7 @@ Each stage writes per-language or per-model files, so reruns of the same command
 | 12 | Benign controls (optional) | `score-benign-controls` |
 | 13 | Tokenizer diagnostics | `attach-tokenizer-metrics` |
 | 14 | Freeze | `build-dataset`, `export-results` |
-| 15 | Tables | `export-report-tables`, `fit-glmm` |
+| 15 | Tables | `export-report-tables`, `fit-glmm-suite` |
 
 ### Restore Archived JSONL Artifacts
 
@@ -180,9 +180,9 @@ unzip -n outputs/belebele_predictions_jsonl.zip
 uv run thesis-eval export-report-tables \
   --rows outputs/dataset_frozen.jsonl \
   --output-dir outputs/tables
-uv run thesis-eval fit-glmm \
+uv run thesis-eval fit-glmm-suite \
   --rows outputs/dataset_frozen.jsonl \
-  --output outputs/tables/glmm_main_effects.csv
+  --output-dir outputs/tables
 
 # The LaTeX exporter expects the full outputs/tables bundle listed below.
 uv run python scripts/write_uriel_latex_assets.py
@@ -447,9 +447,9 @@ uv run thesis-eval export-results \
 uv run thesis-eval export-report-tables \
   --rows outputs/dataset_frozen.jsonl \
   --output-dir outputs/tables
-uv run thesis-eval fit-glmm \
+uv run thesis-eval fit-glmm-suite \
   --rows outputs/dataset_frozen.jsonl \
-  --output outputs/tables/glmm_main_effects.csv
+  --output-dir outputs/tables
 
 # The LaTeX exporter expects the full outputs/tables bundle listed below.
 uv run python scripts/write_uriel_latex_assets.py
@@ -503,9 +503,31 @@ glmm_tokenizer_robustness.csv
 prereg_distance_slope_retention.csv
 prereg_falsification_summary.csv
 glmm_main_effects.csv
+glmm_diagnostics.csv
+glmm_gee_sensitivity.csv
+glmm_prior_sensitivity.csv
+glmm_prior_sensitivity_diagnostics.csv
+glmm_postreview_sensitivity.csv
+glmm_postreview_sensitivity_diagnostics.csv
+glmm_postreview_gee_sensitivity.csv
 ```
 
-`fit-glmm` and the slope-retention tables use only rows with `model_alignment_pole in {weak, strong}`; the reference baseline stays in the descriptive tables.
+`fit-glmm-suite` and the slope-retention tables use only rows with
+`model_alignment_pole in {weak, strong}`; the reference baseline stays in the
+descriptive tables. The primary crossed-intercept logistic model is estimated
+with a deterministic multi-start BFGS Laplace/MAP fit. Fixed effects use a
+weakly informative Normal prior with standard deviation 10, and log random-
+effect standard deviations use a Normal prior with standard deviation 0.5.
+The command refuses to export a fit unless optimization succeeds, the gradient
+norm is at most `1e-4`, all diagnostics are finite, and the Laplace covariance
+matrix is positive definite. It also exports a prompt-clustered GEE with attack-
+language fixed effects and a tighter-fixed-effect-prior sensitivity fit.
+The post-review sensitivity bundle repeats the main fit after excluding (i)
+each model's aligned-language cell, (ii) Finnish, Swahili, and Ukrainian, and
+(iii) every BLASER-flagged translation. The descriptive Spearman exports also
+include deterministic 10,000-resample paired language-cell percentile
+intervals; these intervals quantify within-inventory instability and are not a
+claim that the 13 languages form a random sample of all languages.
 
 ## Validation
 

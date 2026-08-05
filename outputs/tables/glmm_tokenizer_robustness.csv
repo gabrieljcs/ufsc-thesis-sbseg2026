@@ -1,4 +1,4 @@
-predictor,estimate,std_error,odds_ratio,p_value,fit_method,n,warnings
-distance_z,-0.1712513095287294,0.015753073777045185,0.84260979099178,,statsmodels_binomial_bayes_mixed_glm_vb,27643,
-spec_z,0.7849455503887428,0.01630817046467222,2.1922875682774965,,statsmodels_binomial_bayes_mixed_glm_vb,27643,
-token_inflation_z,-0.3213539200178221,0.020359970616170987,0.7251665546078957,,statsmodels_binomial_bayes_mixed_glm_vb,27643,
+﻿fit,predictor,estimate,std_error,ci_lower,ci_upper,odds_ratio,odds_ratio_ci_lower,odds_ratio_ci_upper,posterior_probability_positive,p_value,interval_type,n,fit_method
+tokenizer_robustness,distance_z,-0.1664334891838023,0.025135130763634224,-0.21569834548052538,-0.11716863288707921,0.846679128382645,0.8059783922315993,0.8894351924918639,1.7772759238299875e-11,,laplace_approx_95_credible,27643,laplace_map_crossed_logistic_glmm
+tokenizer_robustness,spec_z,0.7719232494043197,0.06882094148432621,0.6370342040950403,0.906812294713599,2.163924019874962,1.890864636510894,2.476415854089001,1.0,,laplace_approx_95_credible,27643,laplace_map_crossed_logistic_glmm
+tokenizer_robustness,token_inflation_z,-0.31391900847051807,0.030949297580624202,-0.3745796317285415,-0.25325838521249466,0.7305781964088623,0.6875782541308663,0.776267279922496,1.7798112019191307e-24,,laplace_approx_95_credible,27643,laplace_map_crossed_logistic_glmm

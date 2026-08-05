@@ -65,7 +65,41 @@ from thesis_eval.translation.log import TranslationLog
 from thesis_eval.translation.pipeline import PromptRecord, apply_translation_qc, run_translation
 
 
+class _StubTranslator:
+    def __init__(self) -> None:
+        self.calls: list[tuple[str, str, str | None]] = []
+
+    def translate(self, text: str, target_language: str, source_language: str | None = None) -> str:
+        self.calls.append((text, target_language, source_language))
+        return f"EN<{text}>"
+
+
 class TranslationTests(unittest.TestCase):
+    def test_attach_intervention_backtranslations_mirrors_response_path(self) -> None:
+        from thesis_eval.translation.backtranslate import attach_intervention_backtranslations
+
+        translator = _StubTranslator()
+        rows = [
+            {"attack_language": "eng", "intervention_output": "I cannot help.", "intervention_alpha": 1.0},
+            {"attack_language": "swe", "intervention_output": "Jag kan inte hjälpa.", "intervention_alpha": 1.0},
+            {"attack_language": "swe", "intervention_output": "", "intervention_alpha": 1.0},
+        ]
+        output = attach_intervention_backtranslations(rows, translator=translator)
+
+        # English passes through untranslated; Swedish goes through the translator.
+        self.assertEqual(output[0]["intervention_output_backtranslated"], "I cannot help.")
+        self.assertEqual(output[1]["intervention_output_backtranslated"], "EN<Jag kan inte hjälpa.>")
+        self.assertIsNone(output[2]["intervention_output_backtranslated"])
+        self.assertEqual(translator.calls, [("Jag kan inte hjälpa.", "eng", "swe")])
+
+        # Rows are aliased so the StrongREJECT scoring path consumes them directly.
+        for row in output:
+            self.assertEqual(row["model_output"], row["intervention_output"])
+            self.assertEqual(row["model_output_backtranslated"], row["intervention_output_backtranslated"])
+
+        # Original intervention metadata is preserved.
+        self.assertEqual(output[0]["intervention_alpha"], 1.0)
+
     def test_split_sentences_handles_multi_sentence_prompts(self) -> None:
         from thesis_eval.translation.pipeline import _split_sentences
 

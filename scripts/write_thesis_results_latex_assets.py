@@ -395,14 +395,15 @@ def table_glmm() -> str:
         r"\centering",
         r"\setlength\extrarowheight{2pt}",
         r"\begin{tabularx}{\linewidth}{X|c|c|c|c}",
-        r"\caption[Approximate mixed-effects logistic regression]{Approximate fixed effects from the crossed-random-effects logistic regression.}",
+        r"\caption[Crossed-effects logistic regression]{Converged Laplace/MAP fixed effects from the crossed-random-effects logistic regression.}",
         r"\label{tab:glmm-main-effects} \\",
         r"\hline",
-        r"\textbf{Predictor} & \textbf{Estimate} & \textbf{Std. error} & \textbf{Odds ratio} & \textbf{Fit} \\",
+        r"\textbf{Predictor} & \textbf{Estimate} & \textbf{Std. error} & \textbf{OR [95\% CrI]} & \textbf{Fit} \\",
         r"\hline",
     ]
     for row in rows:
-        lines.append(f"{names[row['predictor']]} & {num(row['estimate'])} & {num(row['std_error'])} & {num(row['odds_ratio'])} & VB \\\\")
+        interval = f"{num(row['odds_ratio'])} [{num(row['odds_ratio_ci_lower'])}, {num(row['odds_ratio_ci_upper'])}]"
+        lines.append(f"{names[row['predictor']]} & {num(row['estimate'])} & {num(row['std_error'])} & {interval} & Laplace/MAP \\\\")
         lines.append(r"\hline")
     lines.extend([
         r"\multicolumn{5}{p{\dimexpr\linewidth-2\tabcolsep\relax}}{\fonte{Author.}} \\",
@@ -447,14 +448,15 @@ def table_spec_components() -> str:
         r"\centering",
         r"\setlength\extrarowheight{2pt}",
         r"\begin{tabularx}{\linewidth}{X|c|c|c|c}",
-        r"\caption[Decomposed specialization model]{Approximate mixed-effects model replacing SPEC with IF and CONS.}",
+        r"\caption[Decomposed specialization model]{Converged Laplace/MAP mixed-effects model replacing SPEC with IF and CONS.}",
         r"\label{tab:glmm-spec-components} \\",
         r"\hline",
-        r"\textbf{Predictor} & \textbf{Estimate} & \textbf{Std. error} & \textbf{Odds ratio} & \textbf{$n$} \\",
+        r"\textbf{Predictor} & \textbf{Estimate} & \textbf{Std. error} & \textbf{OR [95\% CrI]} & \textbf{$n$} \\",
         r"\hline",
     ]
     for row in rows:
-        lines.append(f"{names[row['predictor']]} & {num(row['estimate'])} & {num(row['std_error'])} & {num(row['odds_ratio'])} & {row['n']} \\\\")
+        interval = f"{num(row['odds_ratio'])} [{num(row['odds_ratio_ci_lower'])}, {num(row['odds_ratio_ci_upper'])}]"
+        lines.append(f"{names[row['predictor']]} & {num(row['estimate'])} & {num(row['std_error'])} & {interval} & {row['n']} \\\\")
         lines.append(r"\hline")
     lines.extend([
         r"\multicolumn{5}{p{\dimexpr\linewidth-2\tabcolsep\relax}}{\fonte{Author.}} \\",
@@ -472,14 +474,15 @@ def table_tokenizer_model() -> str:
         r"\centering",
         r"\setlength\extrarowheight{2pt}",
         r"\begin{tabularx}{\linewidth}{X|c|c|c|c}",
-        r"\caption[Tokenizer robustness model]{Approximate tokenizer robustness model with standardized token inflation.}",
+        r"\caption[Tokenizer robustness model]{Converged Laplace/MAP tokenizer robustness model with standardized token inflation.}",
         r"\label{tab:glmm-tokenizer-robustness} \\",
         r"\hline",
-        r"\textbf{Predictor} & \textbf{Estimate} & \textbf{Std. error} & \textbf{Odds ratio} & \textbf{$n$} \\",
+        r"\textbf{Predictor} & \textbf{Estimate} & \textbf{Std. error} & \textbf{OR [95\% CrI]} & \textbf{$n$} \\",
         r"\hline",
     ]
     for row in rows:
-        lines.append(f"{names[row['predictor']]} & {num(row['estimate'])} & {num(row['std_error'])} & {num(row['odds_ratio'])} & {row['n']} \\\\")
+        interval = f"{num(row['odds_ratio'])} [{num(row['odds_ratio_ci_lower'])}, {num(row['odds_ratio_ci_upper'])}]"
+        lines.append(f"{names[row['predictor']]} & {num(row['estimate'])} & {num(row['std_error'])} & {interval} & {row['n']} \\\\")
         lines.append(r"\hline")
     lines.extend([
         r"\multicolumn{5}{p{\dimexpr\linewidth-2\tabcolsep\relax}}{\fonte{Author.}} \\",
@@ -547,9 +550,9 @@ def table_hypothesis() -> str:
         r"\hline",
         r"H\textsubscript{1}: ASR increases with linguistic distance & Not supported & Pooled distance coefficient is negative; only 1 of 4 paired comparisons retained the distance-slope sign. \\",
         r"\hline",
-        r"H\textsubscript{2}: stronger specialization reduces ASR & Not supported & SPEC is positive in the approximate joint model (OR = 3.147), and model-level correlations are heterogeneous. \\",
+        r"H\textsubscript{2}: stronger specialization reduces ASR & Not supported & SPEC is positive in the converged joint model (OR = 3.110), and model-level correlations are heterogeneous. \\",
         r"\hline",
-        r"H\textsubscript{3}: distance remains stronger and more stable than specialization & Not supported & Distance and SPEC have signs contrary to the preregistered expectations; collinearity is low, so this is not a collinearity artifact. \\",
+        r"H\textsubscript{3}: distance remains stronger and more stable than specialization & Not supported & Distance and SPEC have signs contrary to the pre-specified expectations; collinearity is low, so this is not a collinearity artifact. \\",
         r"\hline",
         r"\multicolumn{3}{p{\dimexpr\linewidth-2\tabcolsep\relax}}{\fonte{Author.}} \\",
         r"\end{tabularx}",

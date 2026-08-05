@@ -1,4 +1,4 @@
-predictor,estimate,std_error,odds_ratio,p_value,fit_method,n,warnings
-distance_z,-0.10950146360670164,0.014945577839246013,0.8962808525584867,,statsmodels_binomial_bayes_mixed_glm_vb,31778,
-if_z,0.5041095533157416,0.014551619122371679,1.6555107199113688,,statsmodels_binomial_bayes_mixed_glm_vb,31778,
-cons_z,0.6891599471749597,0.015441330574731628,1.9920414101514219,,statsmodels_binomial_bayes_mixed_glm_vb,31778,
+﻿fit,predictor,estimate,std_error,ci_lower,ci_upper,odds_ratio,odds_ratio_ci_lower,odds_ratio_ci_upper,posterior_probability_positive,p_value,interval_type,n,fit_method
+spec_components,distance_z,-0.10644377906668243,0.023909459374584267,-0.1533063194408676,-0.05958123869249726,0.8990255907982321,0.8578669002505486,0.9421589907176202,4.254648245882884e-06,,laplace_approx_95_credible,31778,laplace_map_crossed_logistic_glmm
+spec_components,if_z,0.513663179011161,0.08695530445372204,0.34323078228186576,0.6840955757404562,1.6714026415260406,1.4094940106382385,1.9819784752652134,0.9999999982602417,,laplace_approx_95_credible,31778,laplace_map_crossed_logistic_glmm
+spec_components,cons_z,0.6770210987024579,0.04198734711137016,0.5947258983641723,0.7593162990407434,1.9680064945531919,1.8125340583141691,2.136814778645236,1.0,,laplace_approx_95_credible,31778,laplace_map_crossed_logistic_glmm

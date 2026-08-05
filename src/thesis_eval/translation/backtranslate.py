@@ -96,5 +96,41 @@ def attach_response_backtranslations(
     return output
 
 
+def attach_intervention_backtranslations(
+    rows: list[dict[str, Any]],
+    engine: str = "placeholder",
+    checkpoint: str = "facebook/nllb-200-distilled-600M",
+    device: str = "auto",
+    dtype: str = "auto",
+    translator: NllbTranslator | None = None,
+) -> list[dict[str, Any]]:
+    """Backtranslate ``intervention_output`` through the same path as ``model_output``.
+
+    The output rows carry both field families: ``intervention_output_backtranslated``
+    for the mechanistic artifacts, and the ``model_output``/``model_output_backtranslated``
+    aliases so the StrongREJECT scoring path consumes the file unchanged.
+    """
+    staged: list[dict[str, Any]] = []
+    for row in rows:
+        staged_row = dict(row)
+        staged_row["model_output"] = str(row.get("intervention_output") or "")
+        staged_row.pop("model_output_backtranslated", None)
+        staged.append(staged_row)
+    enriched_rows = attach_response_backtranslations(
+        staged,
+        engine=engine,
+        checkpoint=checkpoint,
+        device=device,
+        dtype=dtype,
+        translator=translator,
+    )
+    output: list[dict[str, Any]] = []
+    for enriched in enriched_rows:
+        merged = dict(enriched)
+        merged["intervention_output_backtranslated"] = merged.get("model_output_backtranslated")
+        output.append(merged)
+    return output
+
+
 def _is_nonlinguistic_output(text: str) -> bool:
     return bool(text.strip()) and not any(character.isalpha() for character in text)

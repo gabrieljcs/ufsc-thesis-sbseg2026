@@ -4,6 +4,8 @@ import argparse
 import gc
 import json
 import sys
+
+import numpy as np
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from collections.abc import Callable
 from time import perf_counter
@@ -25,7 +27,7 @@ from thesis_eval.analysis.reporting import (
     spearman_tables,
     tokenizer_diagnostics,
 )
-from thesis_eval.analysis.glmm import fit_main_glmm
+from thesis_eval.analysis.glmm import DIAGNOSTIC_FIELDS, EFFECT_FIELDS, fit_glmm_suite, fit_main_glmm
 from thesis_eval.benchmarks.belebele import (
     attach_belebele_predictions,
     build_belebele_prediction_rows,
@@ -55,6 +57,21 @@ from thesis_eval.evaluation.strongreject_batch import (
 )
 from thesis_eval.io import append_jsonl, read_csv_dicts, read_jsonl, write_csv_dicts, write_jsonl
 from thesis_eval.metrics.tokenizer import attach_tokenizer_metrics, load_tokenizer
+from thesis_eval.mechanistic.refusal import (
+    analyze_refusal_directions,
+    apply_refusal_addition,
+    extract_residual_activations,
+    link_refusal_separability_to_asr,
+    prepare_refusal_sample,
+    read_tabular_rows,
+    write_direction_bundle,
+    write_language_similarity,
+    write_layer_sweep,
+    write_projection_rows,
+    write_refusal_summary,
+    write_separability_asr,
+    write_transfer_rows,
+)
 from thesis_eval.models.generation import (
     attach_outputs,
     build_generation_runner,
@@ -1864,6 +1881,181 @@ def cmd_score_benign(args: argparse.Namespace) -> None:
     print(f"Wrote {len(scored)} benign-control scored rows to {args.output}")
 
 
+def cmd_prepare_mechanistic_sample(args: argparse.Namespace) -> None:
+    cfg = load_config()
+    rows = read_tabular_rows(Path(args.rows))
+    sample = prepare_refusal_sample(
+        rows,
+        cfg,
+        models=args.model,
+        languages=args.language,
+        max_per_label_per_cell=args.max_per_label_per_cell,
+        seed=args.seed,
+        include_api_models=args.include_api_models,
+    )
+    write_jsonl(Path(args.output), sample)
+    counts: dict[tuple[str, str], int] = {}
+    for row in sample:
+        key = (str(row["model"]), str(row["contrast_label"]))
+        counts[key] = counts.get(key, 0) + 1
+    print(f"Wrote {len(sample)} mechanistic sample rows to {args.output}")
+    for (model, label), count in sorted(counts.items()):
+        print(f"{model} {label}: {count}")
+
+
+def cmd_extract_refusal_activations(args: argparse.Namespace) -> None:
+    cfg = load_config()
+    model_cfg = cfg.models[args.model]
+    if model_cfg.get("access_mode") != "open_weight":
+        raise RuntimeError(f"{args.model} is not an open-weight model; API models do not expose activations.")
+    rows = read_jsonl(Path(args.sample))
+    model_ref = _resolve_model_ref(args.model, args.model_path)
+    layers = [int(value) for value in args.layers] if args.layers else None
+    count = extract_residual_activations(
+        rows,
+        model_name=args.model,
+        model_ref=model_ref,
+        output=Path(args.output),
+        layer=args.layer,
+        layers=layers,
+        device=args.device,
+        dtype=args.dtype,
+        trust_remote_code=args.trust_remote_code,
+        max_records=args.max_records,
+    )
+    print(f"Wrote {count} activation rows for {args.model} to {args.output}")
+
+
+def cmd_analyze_refusal_directions(args: argparse.Namespace) -> None:
+    result = analyze_refusal_directions(
+        [Path(path) for path in args.activations],
+        min_per_label=args.min_per_label,
+    )
+    write_refusal_summary(Path(args.summary_output), result["summary"])
+    print(f"Wrote refusal projection summary to {args.summary_output}")
+    if result["selected_layer"] is not None:
+        print(f"Selected layer {result['selected_layer']} from sweep of {len(result['layer_sweep'])} candidates")
+    if args.projections_output:
+        write_projection_rows(Path(args.projections_output), result["projections"])
+        print(f"Wrote row-level refusal projections to {args.projections_output}")
+    if args.language_similarity_output:
+        write_language_similarity(Path(args.language_similarity_output), result["language_similarity"])
+        print(f"Wrote language-direction similarities to {args.language_similarity_output}")
+    if args.transfer_output:
+        write_transfer_rows(Path(args.transfer_output), result["transfer"])
+        print(f"Wrote cross-lingual transfer AUCs to {args.transfer_output}")
+    if args.layer_sweep_output and result["layer_sweep"]:
+        write_layer_sweep(Path(args.layer_sweep_output), result["layer_sweep"])
+        print(f"Wrote layer sweep to {args.layer_sweep_output}")
+    if args.directions_output:
+        write_direction_bundle(Path(args.directions_output), result["directions"])
+        print(f"Wrote pooled refusal directions to {args.directions_output}")
+
+
+def _maybe_float(value: Any) -> float | None:
+    if value is None or value == "":
+        return None
+    try:
+        parsed = float(value)
+    except (TypeError, ValueError):
+        return None
+    if parsed != parsed or parsed in (float("inf"), float("-inf")):
+        return None
+    return parsed
+
+
+def _maybe_int(value: Any) -> int | None:
+    parsed = _maybe_float(value)
+    return None if parsed is None else int(parsed)
+
+
+def cmd_link_refusal_asr(args: argparse.Namespace) -> None:
+    summary = [dict(row) for row in read_csv_dicts(Path(args.summary))]
+    for row in summary:
+        row["auc_refusal_vs_unsafe"] = _maybe_float(row.get("auc_refusal_vs_unsafe"))
+        row["n_refusal"] = _maybe_int(row.get("n_refusal"))
+        row["n_unsafe"] = _maybe_int(row.get("n_unsafe"))
+    similarity = None
+    if args.language_similarity:
+        similarity = [dict(row) for row in read_csv_dicts(Path(args.language_similarity))]
+        for row in similarity:
+            row["cosine_with_reference_language"] = _maybe_float(row.get("cosine_with_reference_language"))
+    rows = read_tabular_rows(Path(args.rows))
+    asr_rows = asr_by_model_language(rows)
+    joined, stats = link_refusal_separability_to_asr(summary, asr_rows, similarity_rows=similarity)
+    write_separability_asr(Path(args.output), joined)
+    print(f"Wrote {len(joined)} separability/ASR cells to {args.output}")
+    print(f"Spearman(separability AUC, ASR) = {stats['spearman_auc_vs_asr']}")
+    print(f"Spearman(direction cosine, ASR) = {stats['spearman_cosine_vs_asr']}  over n={stats['n_cells']} cells")
+
+
+def cmd_apply_refusal_addition(args: argparse.Namespace) -> None:
+    cfg = load_config()
+    model_cfg = cfg.models[args.model]
+    if model_cfg.get("access_mode") != "open_weight":
+        raise RuntimeError(f"{args.model} is not an open-weight model; API models cannot be intervened on.")
+    rows = read_jsonl(Path(args.prompts))
+    with np.load(Path(args.directions), allow_pickle=False) as bundle:
+        models = [str(value) for value in bundle["models"]]
+        directions = np.asarray(bundle["directions"], dtype=np.float32)
+    if args.model not in models:
+        raise RuntimeError(f"No direction for {args.model} in {args.directions}")
+    direction = directions[models.index(args.model)]
+    model_ref = _resolve_model_ref(args.model, args.model_path)
+    count = apply_refusal_addition(
+        rows,
+        model_name=args.model,
+        model_ref=model_ref,
+        direction=direction,
+        output=Path(args.output),
+        layer=args.layer,
+        alpha=args.alpha,
+        alpha_scale=args.alpha_scale,
+        max_new_tokens=args.max_new_tokens,
+        device=args.device,
+        dtype=args.dtype,
+        trust_remote_code=args.trust_remote_code,
+        max_records=args.max_records,
+    )
+    print(f"Wrote {count} intervened generations for {args.model} to {args.output}")
+
+
+def cmd_backtranslate_interventions(args: argparse.Namespace) -> None:
+    from thesis_eval.translation.backtranslate import attach_intervention_backtranslations
+
+    input_paths = [Path(path) for path in args.input]
+    pending: list[tuple[Path, Path, list[dict[str, Any]]]] = []
+    for input_path in input_paths:
+        rows = read_jsonl(input_path)
+        filename = str(args.output_template).format(stem=input_path.stem)
+        output_path = (Path(args.output_dir) if args.output_dir else input_path.parent) / filename
+        if _skip_existing(output_path, args.force, f"backtranslate {input_path.name}"):
+            continue
+        pending.append((input_path, output_path, rows))
+    if not pending:
+        info("backtranslate-interventions: all outputs already exist; nothing to do.")
+        return
+
+    translator = None
+    if args.engine == "nllb" and any(
+        str(row.get("attack_language")) != "eng" for _, _, group_rows in pending for row in group_rows
+    ):
+        translator = NllbTranslator(checkpoint=args.checkpoint, device=args.device, dtype=args.dtype)
+
+    for input_path, output_path, rows in pending:
+        with step(f"backtranslate {input_path.name} ({len(rows)} rows)"):
+            output = attach_intervention_backtranslations(
+                rows,
+                engine=args.engine,
+                checkpoint=args.checkpoint,
+                device=args.device,
+                dtype=args.dtype,
+                translator=translator,
+            )
+        write_jsonl(output_path, output)
+        print(f"Wrote {len(output)} intervention rows with back-translations to {output_path}")
+
+
 def cmd_build_dataset(args: argparse.Namespace) -> None:
     cfg = load_config()
     scored_rows = read_jsonl(Path(args.scored))
@@ -1891,8 +2083,9 @@ def cmd_export_report_tables(args: argparse.Namespace) -> None:
     write_csv_dicts(output_dir / "crosslingual_asr_by_model_language.csv", asr_by_model_language(rows, exclude_aligned=True), ["model", "attack_language", "n", "unsafe", "asr", "ci_low", "ci_high", "mean_strongreject_score", "refusal_rate"])
     write_csv_dicts(output_dir / "closest_farthest_languages.csv", closest_farthest_by_model(rows), ["model", "closest_language", "closest_distance", "closest_asr", "farthest_language", "farthest_distance", "farthest_asr", "gap"])
     distance_corr, spec_corr = spearman_tables(rows)
-    write_csv_dicts(output_dir / "distance_asr_correlation.csv", distance_corr, ["model", "predictor", "n", "spearman_rho", "p_value", "interpretation"])
-    write_csv_dicts(output_dir / "spec_asr_correlation.csv", spec_corr, ["model", "predictor", "n", "spearman_rho", "p_value", "interpretation"])
+    correlation_fields = ["model", "predictor", "n", "spearman_rho", "ci_low", "ci_high", "p_value", "interval_method", "interpretation"]
+    write_csv_dicts(output_dir / "distance_asr_correlation.csv", distance_corr, correlation_fields)
+    write_csv_dicts(output_dir / "spec_asr_correlation.csv", spec_corr, correlation_fields)
     write_csv_dicts(output_dir / "tokenizer_diagnostics.csv", tokenizer_diagnostics(rows), ["model", "attack_language", "n", "mean_token_inflation", "mean_tokens_per_char", "truncation_risk_rate"])
     write_csv_dicts(output_dir / "belebele_scores.csv", belebele_scores(rows), ["model", "attack_language", "if_score", "cons_score", "spec_score"])
     write_csv_dicts(output_dir / "reference_distance_curve.csv", reference_distance_curve(rows), ["reference_model", "attack_language", "distance_from_english", "n", "unsafe", "asr", "mean_strongreject_score", "refusal_rate"])
@@ -1906,8 +2099,18 @@ def cmd_export_report_tables(args: argparse.Namespace) -> None:
 def cmd_fit_glmm(args: argparse.Namespace) -> None:
     rows = read_jsonl(Path(args.rows))
     effects = fit_main_glmm(rows)
-    write_csv_dicts(Path(args.output), effects, ["predictor", "estimate", "std_error", "odds_ratio", "p_value", "fit_method"])
+    write_csv_dicts(Path(args.output), effects, EFFECT_FIELDS)
     print(f"Wrote GLMM main effects to {args.output}")
+
+
+def cmd_fit_glmm_suite(args: argparse.Namespace) -> None:
+    rows = read_jsonl(Path(args.rows))
+    output_dir = ensure_dir(Path(args.output_dir))
+    outputs = fit_glmm_suite(rows)
+    for filename, table_rows in outputs.items():
+        fields = DIAGNOSTIC_FIELDS if "diagnostic" in filename else EFFECT_FIELDS
+        write_csv_dicts(output_dir / filename, table_rows, fields)
+    print(f"Wrote converged GLMM suite and diagnostics to {output_dir}")
 
 
 def cmd_export_audit_queue(args: argparse.Namespace) -> None:
@@ -2304,6 +2507,80 @@ def build_parser() -> argparse.ArgumentParser:
     benign.add_argument("--output", required=True)
     benign.set_defaults(func=cmd_score_benign)
 
+    mech_sample = sub.add_parser("prepare-mechanistic-sample")
+    mech_sample.add_argument("--rows", required=True, help="Frozen/scored rows as JSONL, CSV, or Parquet.")
+    mech_sample.add_argument("--output", required=True)
+    mech_sample.add_argument("--model", action="append", help="Model key to include. Defaults to all open-weight models.")
+    mech_sample.add_argument("--language", action="append", help="Attack language to include. Defaults to all thesis languages.")
+    mech_sample.add_argument("--max-per-label-per-cell", type=int, default=16)
+    mech_sample.add_argument("--seed", type=int, default=0)
+    mech_sample.add_argument(
+        "--include-api-models",
+        action="store_true",
+        help="Include API models in the sample metadata. They still cannot be used for activation extraction.",
+    )
+    mech_sample.set_defaults(func=cmd_prepare_mechanistic_sample)
+
+    mech_extract = sub.add_parser("extract-refusal-activations")
+    mech_extract.add_argument("--sample", required=True)
+    mech_extract.add_argument("--model", required=True)
+    mech_extract.add_argument("--output", required=True)
+    mech_extract.add_argument("--model-path")
+    mech_extract.add_argument("--device", choices=["auto", "cpu", "mps", "cuda"], default="auto")
+    mech_extract.add_argument("--dtype", choices=["auto", "float16", "bfloat16", "float32"], default="auto")
+    mech_extract.add_argument("--layer", type=int, default=-1, help="Single layer to capture (used when --layers is not given).")
+    mech_extract.add_argument("--layers", action="append", help="Capture multiple layers for a sweep, e.g. --layers 10 --layers 12 --layers 14.")
+    mech_extract.add_argument("--max-records", type=int)
+    mech_extract.add_argument("--trust-remote-code", action="store_true")
+    mech_extract.set_defaults(func=cmd_extract_refusal_activations)
+
+    mech_analyze = sub.add_parser("analyze-refusal-directions")
+    mech_analyze.add_argument("--activations", action="append", required=True)
+    mech_analyze.add_argument("--summary-output", required=True)
+    mech_analyze.add_argument("--projections-output")
+    mech_analyze.add_argument("--language-similarity-output")
+    mech_analyze.add_argument("--transfer-output")
+    mech_analyze.add_argument("--layer-sweep-output")
+    mech_analyze.add_argument("--directions-output")
+    mech_analyze.add_argument("--min-per-label", type=int, default=2)
+    mech_analyze.set_defaults(func=cmd_analyze_refusal_directions)
+
+    mech_link = sub.add_parser("link-refusal-asr")
+    mech_link.add_argument("--summary", required=True, help="Refusal projection summary CSV from analyze-refusal-directions.")
+    mech_link.add_argument("--rows", required=True, help="Frozen/scored rows (JSONL/CSV/Parquet) for ASR.")
+    mech_link.add_argument("--language-similarity", help="Optional language-similarity CSV to also correlate cosine vs ASR.")
+    mech_link.add_argument("--output", required=True)
+    mech_link.set_defaults(func=cmd_link_refusal_asr)
+
+    mech_intervene = sub.add_parser("apply-refusal-addition")
+    mech_intervene.add_argument("--prompts", required=True, help="JSONL of (previously-complied) prompts to intervene on.")
+    mech_intervene.add_argument("--model", required=True)
+    mech_intervene.add_argument("--directions", required=True, help="Direction bundle (.npz) from analyze-refusal-directions.")
+    mech_intervene.add_argument("--output", required=True)
+    mech_intervene.add_argument("--layer", type=int, required=True, help="Residual-stream (hidden_states) index from the layer sweep; the addition is hooked onto the block whose output is that residual.")
+    mech_intervene.add_argument("--alpha", type=float, default=1.0, help="Positive scale; strengthening only. With --alpha-scale it is a multiple of the residual norm.")
+    mech_intervene.add_argument("--alpha-scale", action="store_true", help="Interpret --alpha as a multiple of the mean residual L2 norm at the intervention site (comparable across models).")
+    mech_intervene.add_argument("--max-new-tokens", type=int, default=256)
+    mech_intervene.add_argument("--model-path")
+    mech_intervene.add_argument("--device", choices=["auto", "cpu", "mps", "cuda"], default="auto")
+    mech_intervene.add_argument("--dtype", choices=["auto", "float16", "bfloat16", "float32"], default="auto")
+    mech_intervene.add_argument("--max-records", type=int)
+    mech_intervene.add_argument("--trust-remote-code", action="store_true")
+    mech_intervene.set_defaults(func=cmd_apply_refusal_addition)
+
+    mech_bt = sub.add_parser("backtranslate-interventions")
+    mech_bt.add_argument("--input", action="append", required=True, help="Intervention JSONL(s) from apply-refusal-addition.")
+    mech_bt.add_argument("--output-dir", help="Where to write outputs; defaults to each input's directory.")
+    mech_bt.add_argument("--output-template", default="{stem}.backtranslated.jsonl")
+    mech_bt.add_argument("--engine", choices=["placeholder", "nllb"], default="nllb")
+    # The frozen dataset's response backtranslations used NLLB-200-3.3B (see README);
+    # the interventions must go through the same checkpoint for comparability.
+    mech_bt.add_argument("--checkpoint", default="facebook/nllb-200-3.3B")
+    mech_bt.add_argument("--device", choices=["auto", "cpu", "mps", "cuda"], default="auto")
+    mech_bt.add_argument("--dtype", choices=["auto", "float16", "bfloat16", "float32"], default="auto")
+    mech_bt.add_argument("--force", action="store_true", help="Overwrite outputs that already exist.")
+    mech_bt.set_defaults(func=cmd_backtranslate_interventions)
+
     dataset = sub.add_parser("build-dataset")
     dataset.add_argument("--scored", required=True)
     dataset.add_argument("--output", required=True)
@@ -2321,6 +2598,11 @@ def build_parser() -> argparse.ArgumentParser:
     glmm.add_argument("--rows", required=True)
     glmm.add_argument("--output", required=True)
     glmm.set_defaults(func=cmd_fit_glmm)
+
+    glmm_suite = sub.add_parser("fit-glmm-suite")
+    glmm_suite.add_argument("--rows", required=True)
+    glmm_suite.add_argument("--output-dir", required=True)
+    glmm_suite.set_defaults(func=cmd_fit_glmm_suite)
 
     audit_export = sub.add_parser("export-audit-queue")
     audit_export.add_argument("--translations", required=True)

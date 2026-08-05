@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 import math
+import random
 from typing import Any
 
 from thesis_eval.metrics.asr import wilson_ci
@@ -386,14 +387,53 @@ def _prereg_interpretation(retained: int, panel_complete: bool) -> str:
 
 
 def _correlation_row(model: str, predictor: str, pairs: list[tuple[float, float]]) -> dict[str, Any]:
+    rho = _spearman([pair[0] for pair in pairs], [pair[1] for pair in pairs]) if len(pairs) >= 2 else None
+    ci_low, ci_high = _spearman_bootstrap_interval(model, predictor, pairs)
     return {
         "model": model,
         "predictor": predictor,
         "n": len(pairs),
-        "spearman_rho": _spearman([pair[0] for pair in pairs], [pair[1] for pair in pairs]) if len(pairs) >= 2 else None,
+        "spearman_rho": rho,
+        "ci_low": ci_low,
+        "ci_high": ci_high,
         "p_value": None,
-        "interpretation": "descriptive_only",
+        "interval_method": "paired_language_cell_percentile_bootstrap_10000",
+        "interpretation": "descriptive_only_purposive_language_inventory",
     }
+
+
+def _spearman_bootstrap_interval(
+    model: str,
+    predictor: str,
+    pairs: list[tuple[float, float]],
+    *,
+    samples: int = 10_000,
+) -> tuple[float | None, float | None]:
+    if len(pairs) < 3:
+        return None, None
+    seed = 20260801 + sum((index + 1) * ord(char) for index, char in enumerate(f"{model}:{predictor}"))
+    rng = random.Random(seed)
+    estimates: list[float] = []
+    for _ in range(samples):
+        resampled = [pairs[rng.randrange(len(pairs))] for _ in pairs]
+        estimates.append(
+            _spearman(
+                [pair[0] for pair in resampled],
+                [pair[1] for pair in resampled],
+            )
+        )
+    estimates.sort()
+    return _percentile(estimates, 0.025), _percentile(estimates, 0.975)
+
+
+def _percentile(values: list[float], probability: float) -> float:
+    position = probability * (len(values) - 1)
+    lower = math.floor(position)
+    upper = math.ceil(position)
+    if lower == upper:
+        return values[lower]
+    weight = position - lower
+    return values[lower] * (1 - weight) + values[upper] * weight
 
 
 def _spearman(xs: list[float], ys: list[float]) -> float:

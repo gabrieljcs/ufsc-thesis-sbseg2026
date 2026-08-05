@@ -1,13 +1,22 @@
-# Artefato SBSeg 2026 - Avaliação Cross-Lingual Jailbreak
+# Além da Distância Linguística: Jailbreaks Multilíngues em LLMs Especializados por Idioma
 
-Este repositório contém o pacote de avaliação reprodutível da tese *Multilingual Jailbreaks in Language-Specific Large Language Models*, preparado como artefato para o Comitê Técnico de Artefatos do SBSeg 2026.
+Este repositório contém o artefato do artigo *Além da Distância Linguística: Jailbreaks Multilíngues em LLMs Especializados por Idioma*, preparado para o Comitê Técnico de Artefatos do SBSeg 2026. Ele implementa e preserva a avaliação empírica descrita no artigo.
 
+<<<<<<< HEAD
 O artefato implementa e disponibiliza a pipeline empírica usada para avaliar se o sucesso de jailbreaks cross-lingual contra LLMs alinhados para idiomas específicos é melhor explicado por distância linguística, especialização pós-treinamento, fragmentação de tokenização e instabilidade de tradução/pontuação.
+=======
+**Resumo do artigo.** Avaliamos se o sucesso de *jailbreaks* multilíngues contra LLMs especializados por idioma é melhor explicado pela distância tipológica ou pela especialização pós-treinamento. O painel contém oito assistentes instrucionais em quatro pares fraco/forte, alinhados a português, italiano, sueco e búlgaro, avaliados em 13 idiomas de ataque. As respostas são pontuadas por StrongREJECT; as análises combinam distância URIEL+, especialização BELEBELE e modelos logísticos de efeitos mistos. Os resultados não sustentam a hipótese direcional de distância: o risco é predominantemente específico do modelo, e os modelos mais fortes do par são, em geral, mais seguros.
+
+Esta cópia foi criada a partir de `eval/`; avaliadores desta submissão devem usar esta pasta, não o diretório de desenvolvimento original.
+
+Fonte das regras de estruturação deste README: introdução do CTA/SBSeg 2026 em <https://doc-artefatos.github.io/sbseg2026/introducao.html> e instruções de submissão em <https://doc-artefatos.github.io/sbseg2026/subinstrucoes.html>.
+>>>>>>> 05fb841 (Review files)
 
 # Estrutura do README.md
 
 Este README segue as seções obrigatórias do modelo SBSeg 2026:
 
+- título do projeto e resumo do artigo;
 - `Selos Considerados`: selos solicitados e critério de atendimento.
 - `Informações básicas`: componentes, ambiente e recursos esperados.
 - `Dependências`: software, datasets, modelos, APIs e artefatos de terceiros.
@@ -322,9 +331,9 @@ Resultado esperado:
 - `outputs/tables/closest_farthest_languages.csv`;
 - atualização dos assets LaTeX consumidos pela tese.
 
-## Reivindicação #3 - Os modelos estatísticos principais podem ser ajustados a partir do painel congelado
+## Reivindicação #3 - Os modelos estatísticos e as sensibilidades pós-revisão podem ser ajustados a partir do painel congelado
 
-Objetivo: reproduzir os efeitos principais, diagnósticos de colinearidade, estratos weak/strong, robustez de tokenização e decomposição IF/CONS.
+Objetivo: reproduzir os efeitos principais, diagnósticos de convergência e colinearidade, estratos weak/strong, robustez de tokenização, decomposição IF/CONS e sensibilidades solicitadas na revisão.
 
 Recursos: CPU, 8-16 GB RAM, sem GPU. Tempo esperado: 10-60 minutos, dependendo da máquina.
 
@@ -333,9 +342,9 @@ Comandos:
 ```sh
 uv sync --extra analysis
 
-uv run thesis-eval fit-glmm \
+uv run thesis-eval fit-glmm-suite \
   --rows outputs/dataset_frozen.jsonl \
-  --output outputs/tables/glmm_main_effects.csv
+  --output-dir outputs/tables
 
 uv run thesis-eval export-report-tables \
   --rows outputs/dataset_frozen.jsonl \
@@ -345,12 +354,19 @@ uv run thesis-eval export-report-tables \
 Resultado esperado:
 
 - `outputs/tables/glmm_main_effects.csv`;
+- `outputs/tables/glmm_diagnostics.csv`;
+- `outputs/tables/glmm_gee_sensitivity.csv`;
+- `outputs/tables/glmm_prior_sensitivity.csv`;
+- `outputs/tables/glmm_postreview_sensitivity.csv`;
+- `outputs/tables/glmm_aggregated_cell_sensitivity.csv`;
 - `outputs/tables/glmm_collinearity.csv`;
 - `outputs/tables/glmm_strata_effects.csv`;
 - `outputs/tables/glmm_spec_components.csv`;
 - `outputs/tables/glmm_tokenizer_robustness.csv`;
 - `outputs/tables/prereg_distance_slope_retention.csv`;
 - `outputs/tables/prereg_falsification_summary.csv`.
+
+O ajuste principal usa Laplace/MAP com múltiplos inícios BFGS e é aceito apenas se a otimização tiver sucesso, a norma do gradiente for no máximo `1e-4`, os diagnósticos forem finitos e a covariância de Laplace for positiva definida. O mesmo comando também exporta a GEE agrupada por *prompt*, uma sensibilidade de prior e sensibilidades que removem a célula alinhada, os idiomas de maior risco de tradução e todas as linhas sinalizadas por BLASER. A análise agregada em 103 células modelo--idioma verifica se os sinais se preservam sem tratar repetições por *prompt* como novas variações dos preditores de célula.
 
 ## Reivindicação #4 - A pipeline completa pode ser reexecutada, com recursos externos
 
