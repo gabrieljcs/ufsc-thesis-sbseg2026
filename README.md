@@ -2,15 +2,7 @@
 
 Este repositório contém o artefato do artigo *Além da Distância Linguística: Jailbreaks Multilíngues em LLMs Especializados por Idioma*, preparado para o Comitê Técnico de Artefatos do SBSeg 2026. Ele implementa e preserva a avaliação empírica descrita no artigo.
 
-<<<<<<< HEAD
-O artefato implementa e disponibiliza a pipeline empírica usada para avaliar se o sucesso de jailbreaks cross-lingual contra LLMs alinhados para idiomas específicos é melhor explicado por distância linguística, especialização pós-treinamento, fragmentação de tokenização e instabilidade de tradução/pontuação.
-=======
 **Resumo do artigo.** Avaliamos se o sucesso de *jailbreaks* multilíngues contra LLMs especializados por idioma é melhor explicado pela distância tipológica ou pela especialização pós-treinamento. O painel contém oito assistentes instrucionais em quatro pares fraco/forte, alinhados a português, italiano, sueco e búlgaro, avaliados em 13 idiomas de ataque. As respostas são pontuadas por StrongREJECT; as análises combinam distância URIEL+, especialização BELEBELE e modelos logísticos de efeitos mistos. Os resultados não sustentam a hipótese direcional de distância: o risco é predominantemente específico do modelo, e os modelos mais fortes do par são, em geral, mais seguros.
-
-Esta cópia foi criada a partir de `eval/`; avaliadores desta submissão devem usar esta pasta, não o diretório de desenvolvimento original.
-
-Fonte das regras de estruturação deste README: introdução do CTA/SBSeg 2026 em <https://doc-artefatos.github.io/sbseg2026/introducao.html> e instruções de submissão em <https://doc-artefatos.github.io/sbseg2026/subinstrucoes.html>.
->>>>>>> 05fb841 (Review files)
 
 # Estrutura do README.md
 
